@@ -1,0 +1,367 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 11-13-2023
+  @last modified by  : Kaptio Developer
+-->
+<apex:page controller="KTD_DocumentTemplateController"
+  showHeader="false"
+  sidebar="false"
+  standardStylesheets="false"
+  cache="false"
+  docType="html-5.0"
+  contentType="text/html"
+  applyBodyTag="false"
+  applyHTMLTag="false"
+>
+  <html class="document">
+    <head>
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets6, '/libs/jquery/3.6.0/jquery.min.js')}"
+      />
+
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets, '/libs/bootstrap/3.2.2/js/modal.js')}"
+      />
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets, '/libs/bootstrap/3.2.2/js/tab.js')}"
+      />
+      <!-- <link href="{!URLFOR($Resource.KaptioTravel__assets, '/libs/bootstrap/3.2.2/css/bootstrap.css')}" rel="stylesheet" /> -->
+      <!-- <link
+        href="{!URLFOR($Resource.KaptioTravel__assets, '/libs/bootstrap/3.2.2/css/bootstrap_ns.css')}"
+        rel="stylesheet"
+      /> -->
+
+      <link
+        href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        rel="stylesheet"
+      />
+      <link
+        href="https://fonts.googleapis.com/css?family=*Merriweather:300,300i,400,400i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i*&display=swap"
+        rel="stylesheet"
+      />
+      <link
+        href="{!URLFOR($Resource.KaptioTravel__assets, '/libs/fancybox/2.1.5/jquery.fancybox.css')}"
+        rel="stylesheet"
+      />
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets, '/libs/fancybox/2.1.5/jquery.fancybox.pack.js')}"
+      />
+      <link
+        href="{!URLFOR($Resource.KaptioTravel__assets, '/libs/fancybox/2.1.5/helpers/jquery.fancybox-buttons.css')}"
+        rel="stylesheet"
+      />
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets, '/libs/fancybox/2.1.5/helpers/jquery.fancybox-buttons.js')}"
+      />
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets, '/libs/fancybox/2.1.5/helpers/jquery.fancybox-media.js')}"
+      />
+      <!-- <script src="{!URLFOR($Resource.KaptioTravel__assets, 'libs/momentjs/2.10.2/moment.min.js')}" /> -->
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets7, '/libs/momentjs/2.29.4/moment.min.js')}"
+      />
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"
+      />
+      <script
+        src="https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key={!$Setup.KaptioTravel__AppSettings__c.KaptioTravel__GoogleMapsApiKey__c}"
+      />
+      <link
+        href="{!URLFOR($Resource.KaptioTravel__assets3, '/libs/lightgallery/css/lightgallery.min.css')}"
+        rel="stylesheet"
+      />
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets3, '/libs/lightgallery/js/lightgallery-all.min.js')}"
+      />
+      <script
+        src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"
+      />
+      <!-- <script src="https://f.vimeocdn.com/js/froogaloop2.min.js" /> -->
+      <script
+        src="{!URLFOR($Resource.KaptioTravel__assets5, '/libs/froogaloop2/froogaloop2.min.js')}"
+      />
+
+      <link
+      href="{!URLFOR($Resource.KaptioDocuments, '/css/bootstrap_ns.css')}"
+      rel="stylesheet"
+    />
+
+      <link
+        href="{!URLFOR($Resource.KaptioDocuments, '/css/style.css')}"
+        rel="stylesheet"
+      />
+
+      <script src="{!URLFOR($Resource.KaptioDocuments, '/js/main.js')}" />
+
+      <meta http-equiv="X-UA-Compatible" content="IE=10,chrome=1" />
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      />
+        
+      <style type="text/css">
+
+        {!colorscheme}  /* root variables */
+      
+        header {
+          background-image: url({!banner});
+        }
+      </style>
+      <title>{!documentTitle}</title>
+    </head>
+
+    <body class="ns-bootstrap nav-{!documentSetting.NavigationType__c}">
+      <!-- Body -->
+        <div class="" id="printableArea">
+            <!-- HEADER -->
+            <header>
+            <!-- Vertical menu header -->
+            <apex:outputpanel layout="none"
+                rendered="{!documentSetting.NavigationType__c = 'Vertical'}"
+            >
+                <div class="header-contaier">
+                <div class="container">
+                    <div class="row">
+                    <!-- Logo -->
+                    <div class="col-sm-12 col-md-6">
+                        <img
+                        src="{!logo.logoUrl}"
+                        width="{!logo.logoWidth}"
+                        height="{!logo.logoHeight}"
+                        />
+                    </div>
+                    </div>
+                    <div class="row">
+                    <!-- Itinerary Info -->
+                    <div class="itinerary-info">
+                        <div class="col-sm-12 col-md-8">
+                        <h1 class="itinerary-name">{!itinerary.Name}</h1>
+                        <p class="itinerary-date">
+                            <apex:outputText value="{0, date, MMMM YYYY}">
+                            <apex:param value="{!itinerary.KaptioTravel__Start_Date__c}"
+                            />
+                            </apex:outputText>
+                        </p>
+                        <p>{!$Label.KTD_Label_QuoteReference}:                            
+                                <apex:outputText value=" {!itinerary.KaptioTravel__VersionNumber__c}" />
+                            
+                        </p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </apex:outputpanel>
+            <!-- END Vertical menu header -->
+            <!-- Horizontal menu header -->
+            <apex:outputpanel layout="none"
+                rendered="{!documentSetting.NavigationType__c = 'Horizontal'}"
+            >
+                <div class="header-container">
+                    
+                    <div class="logo">
+                        <img src="{!logo.logoUrl}" width="{!logo.logoWidth}" height="{!logo.logoHeight}" />  
+                    </div>
+                    
+                <div class="container">
+                    <div class="row">
+                        <div class="itinerary-info">
+                            <div class="col-sm-12 col-md-8">
+                                <h1 class="itinerary-name">{!itinerary.Name}</h1>
+                                <p class="itinerary-date">
+                                    <apex:outputText value="{0, date, MMMM YYYY}">
+                                    <apex:param value="{!itinerary.KaptioTravel__Start_Date__c}"
+                                    />
+                                    </apex:outputText>
+                                </p>
+                                <p>{!$Label.KTD_Label_QuoteReference}:                            
+                                    <apex:outputText value=" {!itinerary.KaptioTravel__VersionNumber__c}" />
+                                
+                            </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                </div>
+            </apex:outputpanel>
+            <!-- END Horizontal menu header -->
+            </header>
+            <!-- END OF HEADER -->
+            <apex:outputpanel layout="none"
+            rendered="{!documentSetting.NavigationType__c = 'Horizontal'}" >
+                <div class="menu-container">
+                    <div class="menu-logo">
+                        <img src="{!logo.logoUrl}" width="auto" height="45px" />  
+                    </div>
+                    <apex:insert name="navigation-header" />
+                </div>
+            </apex:outputpanel>
+            <!-- BODY -->
+            <div class="container output-resources-ns">
+            <div class="content row aside clearfix at-content-container">
+                <!-- Content -->
+                <!-- <main class="col-sm-12 col-md-8 ns-bootstrap" id="content"> -->
+                <apex:insert name="сontent" />
+                <!-- </main> -->
+                <!-- End on Content -->
+
+                <!-- Summary Box -->
+                <aside class="sidebar">
+                <div class="col-sm-12 col-md-4 summary-box-container">
+                    <apex:insert name="summary-box" />
+                </div>
+                <!-- End of Summary Box -->
+
+                <div class="col-sm-12 col-md-4 sticky sidebar-container">
+                    <!-- Sidebar Navigation -->
+                    <apex:insert name="navigation-sidebar" />
+                    <!-- End of Sidebar Navigation -->
+
+                    <!-- Sidebar Sections -->
+                    <apex:insert name="sidebar-sections" />
+                    <!-- Sidebar Sections -->
+                </div>
+                </aside>
+            </div>
+            </div>
+            <!-- END OF BODY -->
+
+            <!-- FOOTER -->
+            <footer id="footer">
+            <div class="container">
+                <!-- Awards -->
+
+                <!-- Social Media Links -->
+                <ul class="social">
+                <apex:outputPanel layout="none"
+                    rendered="{!documentSetting.Instagram__c != null}"
+                >
+                    <li>
+                    <a class="social-in" href="{!documentSetting.Instagram__c}">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    </li>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none"
+                    rendered="{!documentSetting.Facebook__c != null}"
+                >
+                    <li>
+                    <a class="social-in" href="{!documentSetting.Facebook__c}">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    </li>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none"
+                    rendered="{!documentSetting.Instagram__c != null}"
+                >
+                    <li>
+                    <a class="social-in" href="{!documentSetting.Twitter__c}">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    </li>
+                </apex:outputPanel>
+                </ul>
+                <!-- Footer Links -->
+                <ul class="footer-links">
+                <apex:outputPanel layout="none"
+                    rendered="{!documentSetting.PrivacyPolicy__c != null}"
+                >
+                    <li>
+                    <a href="{!documentSetting.PrivacyPolicy__c}"
+                        >{!$Label.KTD_Link_PrivacyPolicy}</a
+                    >
+                    </li>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none"
+                    rendered="{!documentSetting.TermsOfUse__c != null}"
+                >
+                    <li>
+                    <a href="{!documentSetting.TermsOfUse__c}"
+                        >{!$Label.KTD_Link_TermsOfUse}</a
+                    >
+                    </li>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none"
+                    rendered="{!documentSetting.ContactUs__c != null}"
+                >
+                    <li>
+                    <a href="{!documentSetting.ContactUs__c}"
+                        >{!$Label.KTD_Link_ContactUs}</a
+                    >
+                    </li>
+                </apex:outputPanel>
+                <apex:outputPanel layout="none"
+                    rendered="{!documentSetting.WebsiteFeedback__c != null}"
+                >
+                    <li>
+                    <a href="{!documentSetting.WebsiteFeedback__c}"
+                        >{!$Label.KTD_Link_WebsiteFeedback}</a
+                    >
+                    </li>
+                </apex:outputPanel>
+                </ul>
+                <!-- Copyright -->
+                <div class="copyright">
+                <apex:outputText value="{!$Label.KTD_Text_Copyright}"
+                    escape="false"
+                />
+                </div>
+            </div>
+            </footer>
+            <!-- END OF FOOTER -->
+        </div>
+
+      <script>
+        document.addEventListener(
+          "DOMContentLoaded",
+          function () {
+            // do something here ...
+            //initDocument();
+            onKTContentLoaded();
+            afterCustomerCommentsInit();
+            showMenuLogo();
+            closeMobileMenuOnClick()
+          },
+          false
+        );
+
+        function afterCustomerCommentsInit() {
+          if (window.location.search.indexOf("comments=true") > -1) {
+            openCustomerComments("{!$CurrentPage.Parameters.Id}");
+          }
+        }
+
+        function onKTContentLoaded() {
+          setNavbar();
+          setCollapsedListBehavior();
+        }
+
+        function viewGallery(element, galleryString) {
+          var images = galleryString.split(";");
+          var dynamicElements = [];
+          for (var i = 0; i < images.length; i++) {
+            var dto = {
+              src: images[i],
+              thumb: images[i],
+              subHtml: "",
+              mobileSrc: images[i]
+            };
+            dynamicElements.push(dto);
+          }
+          var $ = jQuery.noConflict();
+
+          $(element).lightGallery({
+            dynamic: true,
+            html: true,
+            mobileSrc: true,
+            dynamicEl: dynamicElements
+          });
+        }
+      </script>
+    </body>
+  </html>
+</apex:page>

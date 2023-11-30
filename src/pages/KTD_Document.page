@@ -1,0 +1,119 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 11-11-2022
+  @last modified by  : Kaptio Developer
+-->
+<apex:page id="KTD_Document" title="{!output.content.KaptioTravel__StageType__c}" showHeader="false" sidebar="false" standardStylesheets="false"
+    cache="false" docType="html-5.0" controller="KTD_DocumentController" contentType="text/html" applyBodyTag="false" applyHTMLTag="false">
+
+    <apex:composition template="KTD_DocumentTemplate">
+        <!-- SUMMARY BOX -->
+        <apex:define name="summary-box">
+            <div class="summary-box">
+                <p>{!$Label.KTD_Label_QuoteReference}:
+                    <span>
+                        <apex:outputText value="{!itinerary.KaptioTravel__VersionNumber__c}" />
+                    </span>
+                </p>
+                <p>{!$Label.KTD_Label_PerPerson}:
+                    <span>
+                        <apex:outputText value="{!currencySymbol}{0, number,###,###,##0.00}">
+                            <apex:param value="{!output.itinerary.KaptioTravel__Amount_Per_Person__c}" />
+                        </apex:outputText>
+                    </span>
+                </p>
+                <p class="total">
+                    {!$Label.KTD_Label_Total}:
+                    <span class="total">
+                        <apex:outputText value="{!currencySymbol}{0, number,###,###,##0.00}">
+                            <apex:param value="{!output.itinerary.KaptioTravel__Itinerary_Amount__c}" />
+                        </apex:outputText>
+                    </span>
+                </p>
+
+                <h3>{!$Label.KTD_Heading_YourAgent}</h3>
+                <div class="pricing-agent-card">
+                    <div class="pricing-ci-photo">
+                        <img src="{!agent.SmallPhotoUrl}" alt="{!agent.FirstName} {!agent.LastName}" />
+                    </div>
+
+
+
+
+                    <div class="pricing-ci-agent">{!agent.FirstName} {!agent.LastName}</div>
+                    <apex:outputPanel layout="none" rendered="{!agent.Phone != null}">
+                        <div class="pricing-ci-phone">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 216 216">
+                                <path d="M156.41,189.34c-7,0-16-2-27.35-7.52-17-8.19-36.22-22.63-54.25-40.66S42.34,103.87,34.15,86.92c-12.5-25.89-7.1-39.36-.36-46.09L47.9,26.71a14.56,14.56,0,0,1,20.53.05L96.85,55.18a14.91,14.91,0,0,1,.05,20.53L83.49,89.12c.71,3.15,6.76,12.4,18.86,24.5s21.36,18.16,24.51,18.87l13.41-13.41a14.6,14.6,0,0,1,10.11-4.2h.15a14.41,14.41,0,0,1,10.27,4.25l28.42,28.42a14.54,14.54,0,0,1,.05,20.53l-14.12,14.11C171.36,186,165.45,189.34,156.41,189.34ZM58.19,31.49a5.57,5.57,0,0,0-3.92,1.59L40.15,47.19c-4.73,4.73-5.75,12.26-3,22.37,10.36,38.68,70.63,98.95,109.31,109.31,10.11,2.71,17.64,1.69,22.37-3l14.11-14.12a5.39,5.39,0,0,0,1.6-3.91,5.62,5.62,0,0,0-1.64-3.89l-28.43-28.42a5.58,5.58,0,0,0-7.8,0l-14.11,14.11c-5.63,5.63-17.92-1-36.53-19.57a141.54,141.54,0,0,1-16.31-19.07c-2.3-3.37-8.4-12.32-3.26-17.46L90.53,69.34a5.89,5.89,0,0,0,0-7.8L62.07,33.12A5.45,5.45,0,0,0,58.19,31.49Z"
+                                />
+                            </svg>
+                            <p>
+                                <a href="tel:{!agent.Phone}">{!agent.Phone}</a>
+                            </p>
+                        </div>
+
+                    </apex:outputPanel>
+                    <div class="pricing-ci-email" style="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="17" viewBox="0 0 216 216">
+                            <path d="M22.5,40.5v135h171V40.5ZM170,49.5l-62,69.73L46,49.5Zm14.52,117H31.5V49.5H34l74,83.27L182,49.5h2.48Z" />
+                        </svg>
+                        <a href="mailto:{!agent.Email}">{!agent.Email}</a>
+                    </div>
+                </div>
+
+            </div>
+        </apex:define>
+
+        <!-- MAIN CONTENT -->
+        <apex:define name="сontent">
+            <main class="col-sm-12 col-md-8 ns-bootstrap" id="content">
+                <apex:outputText value="{!output.body}" escape="false" />
+            </main>
+        </apex:define>
+
+        <!-- NAVIGATION SIDEBAR -->
+        <apex:define name="navigation-sidebar">
+            <apex:outputPanel layout="none" rendered="{!documentSetting.NavigationType__c = 'Vertical'}">
+                <nav>
+                    <ul id="navbar"></ul>
+                </nav>
+            </apex:outputPanel>
+        </apex:define>
+        <apex:define name="navigation-header">
+
+            <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+            <nav>
+                <ul id="navbar"></ul>
+            </nav>
+            <label for="nav-toggle" class="nav-toggle-label">
+                <span></span>
+            </label>
+
+        </apex:define>
+
+        <!-- OTHER SIDEBAR SECTIONS -->
+        <apex:define name="sidebar-sections">
+
+            <!-- Customer Actions -->
+            <KaptioTravel:CustomerActions contextId="{!$CurrentPage.parameters.Id}" />
+
+
+            <!-- End of Customer Actions -->
+        </apex:define>
+    </apex:composition>
+    <KaptioTravel:CustomerComments />
+    <KaptioTravel:KTAgendaBlock />
+    <KaptioTravel:FullScreenModal />
+    <c:KTD_KTAgenda dateFormat="{!agendaHeaderDateFormat}" shortFormat="{!agendaShortDateFormat}" agent="{!agent}" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // do something here ...
+            initDocument();
+
+
+        }, false);
+    </script>
+</apex:page>

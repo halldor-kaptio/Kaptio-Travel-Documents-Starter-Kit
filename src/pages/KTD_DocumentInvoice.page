@@ -1,0 +1,31 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 11-15-2022
+  @last modified by  : Kaptio Developer
+-->
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" lightningStylesheets="false" applyHtmlTag="false"
+    applyBodyTag="false" docType="html-5.0" controller="KTD_DocumentInvoiceController" id="KT_BookingConfirmation">
+
+    <html>
+
+        <head>
+            <style type="text/css">
+                /* Header and footer elements must be defined in the document file, not the template file */
+            </style>
+            <link href="{!URLFOR($Resource.KaptioDocuments, '/css/invoiceStyle.css')}" rel="stylesheet" />
+        </head>
+
+        <body class="invoice">
+            <apex:composition template="KTD_DocumentInvoiceTemplate">
+                <apex:define name="Body">
+                    <h2>{!documentheading}</h2>
+                    <c:KTD_DocumentInvoiceDetails itinerary="{!itinerary}" ItineraryDocument="{!document}" isB2B="{!isB2B}" isPersonAccount="{!isPersonAccount}" documentPublishedDate="{!documentPublishedDate}" />
+                    <apex:outputText value="{!output.body}" escape="false" />
+                </apex:define>
+            </apex:composition>
+        </body>
+
+    </html>
+</apex:page>

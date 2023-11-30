@@ -1,0 +1,149 @@
+<!--
+  @description       : Cancellation financials overview. Displays cancellation charge or refund due based on cancellation logic. class "b2b-commission" sections  shown if channel is a B2B channel.
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 11-11-2022
+  @last modified by  : Kaptio Developer
+-->
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" lightningStylesheets="false" docType="html-5.0"
+    applyHtmlTag="false" applyBodyTag="false" controller="KTD_ComponentCancellationController" action="{!pageAction}">
+
+    <div class="services-info">
+        <table class="no-cell-borders">
+            <thead>
+                <tr>
+                    <th>{!$Label.KTD_Label_DescriptionOfServices}</th>
+                    <th>{!$Label.KTD_Label_InvoiceAmount}</th>
+                    <th class="cell-aligh-right">{!$Label.KTD_Label_CancellationCharge}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{!itinerary.Name}</td>
+                    <td>
+                        <apex:outputPanel layout="none" rendered="{!itinerary.KaptioTravel__OriginalTotalPriceForCancelled__c != null}">
+                            {!currencySymbol}
+                            <apex:outputText value="{0,number,#,##0.00}">
+                                <apex:param value="{!itinerary.KaptioTravel__OriginalTotalPriceForCancelled__c}" />
+                            </apex:outPutText>
+                        </apex:outputPanel>
+                    </td>
+                    <td class="cell-aligh-right">
+                        <apex:outputPanel layout="none" rendered="{!itinerary.KaptioTravel__Itinerary_Amount__c!= null}">
+                            {!currencySymbol}
+                            <apex:outputText value="{0,number,#,##0.00}">
+                                <apex:param value="{!itinerary.KaptioTravel__Itinerary_Amount__c}" />
+                            </apex:outPutText>
+                        </apex:outputPanel>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="balance-info-section">
+        <div class="empty-block">&nbsp;</div>
+
+        <div class="balance-info">
+            <div class="column-item">
+                <div class="column-item-label">{!$Label.KTD_Label_Total}:</div>
+                <apex:outputPanel layout="none" rendered="{!itinerary.KaptioTravel__OriginalTotalPriceForCancelled__c != null}">
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!itinerary.KaptioTravel__OriginalTotalPriceForCancelled__c}" />
+                        </apex:outPutText>
+                    </div>
+                </apex:outputPanel>
+            </div>
+
+            <apex:outputpanel layout="none" rendered="{!isB2B}">
+                <div class="column-item b2b-commission">
+                    <div class="column-item-label">{!$Label.KTD_Label_Commission}:</div>
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!itinerary.KaptioTravel__ResellerCommissionTotal__c}" />
+                        </apex:outPutText>
+                    </div>
+                </div>
+            </apex:outputpanel>
+            <apex:outputPanel layout="none" rendered="{!itinerary.KaptioTravel__Transaction_Amount__c != null}">
+                <div class="column-item">
+                    <div class="column-item-label">{!$Label.KTD_Label_PaymentReceived}:</div>
+                    <div class="column-item-desc bottom">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!itinerary.KaptioTravel__Transaction_Amount__c}" />
+                        </apex:outputText>
+                    </div>
+                </div>
+
+            </apex:outputPanel>
+
+            <!-- Show if net invoiced -->
+            <apex:outputpanel layout="none" rendered="{!AND(isB2B, NOT(itinerary.KaptioTravel__GrossInvoicing__c) )}">
+                <div class="column-item b2b-commission">
+                    <div class="column-item-label">{!$Label.KTD_Label_CancellationCharge}:</div>
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!itinerary.KaptioTravel__TotalAmountNet__c}" />
+                        </apex:outPutText>
+                    </div>
+                </div>
+
+                <!-- END Show if net invoiced -->
+
+
+                <!-- B2B Gross Invoicing unchecked-->
+                <div class="column-item b2b-commission">
+
+                    <div class="column-item-label">{!IF(itinerary.KaptioTravel__Outstanding__c > 0, $Label.KTD_Label_OutstandingBalance, $Label.KTD_Label_RefundDue)}:</div>
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!refundAmount}" />
+                        </apex:outputText>
+                    </div>
+
+                </div>
+
+            </apex:outputpanel>
+
+            <!-- B2B Gross Invoicing checked-->
+            <apex:outputpanel layout="none" rendered="{!AND(isB2B, itinerary.KaptioTravel__GrossInvoicing__c)}">
+                <div class="column-item b2b-gross">
+                    <apex:outputPanel layout="none">
+                        <div class="column-item-label">{!IF(itinerary.KaptioTravel__Outstanding__c > 0, $Label.KTD_Label_OutstandingBalance, $Label.KTD_Label_RefundDue)}:</div>
+                        <div class="column-item-desc">{!currencySymbol}
+                            <apex:outputText value="{0,number,###,###,##0.00}">
+                                <apex:param value="{!refundAndCommissionAmount}" />
+                            </apex:outputText>
+                        </div>
+                    </apex:outputPanel>
+                </div>
+                <div class="column-item b2b-gross">
+                    <div class="column-item-label">{!$Label.KTD_Label_Commission}:</div>
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!itinerary.KaptioTravel__ResellerCommissionTotal__c}" />
+                        </apex:outPutText>
+                    </div>
+                </div>
+            </apex:outputpanel>
+            <!---->
+        </div>
+    </div>
+
+    <div class="additional-info">
+        <div>
+            <div class="column-item-label">
+                <label>{!$Label.KTD_Label_Passengers}:</label>
+            </div>
+            <div class="column-item-desc">
+                <apex:variable var="index" value="{!1}" />
+                <apex:repeat value="{!itinerary.KaptioTravel__Passengers__r}" var="pax">
+                    <div class="column-item">{!index}. {!pax.KaptioTravel__Salutation__c} {!pax.KaptioTravel__FirstName__c} {!pax.KaptioTravel__LastName__c}</div>
+                    <apex:variable var="index" value="{!index + 1}" />
+                </apex:repeat>
+            </div>
+        </div>
+    </div>
+
+</apex:page>

@@ -1,0 +1,31 @@
+<apex:page controller="KTD_DocumentInvoiceTemplateController" showHeader="false" sidebar="false" standardStylesheets="false"
+    applyHtmlTag="false" applyBodyTag="false" lightningStylesheets="false" cache="false" docType="html-5.0" renderAs="{!renderAs}">
+    <html>
+    <head>
+        <style type="text/css">
+            {!colorscheme}  
+        </style>
+    </head>
+    <body>
+        
+        <div class="header">
+            <div class="header-image">
+                <img src="{!logo.logoUrl}" width="{!logo.logoWidth}" height="{!logo.logoHeight}" />
+            </div>
+        </div>
+        <div class="footer">
+            <div class="invoice-footer-text">
+                {!$Label.KTD_Text_InvoiceFooter}
+            </div>
+            <div class="invoice-footer-pagenumber">Page
+                <span class="pagenumber" /> of
+                <span class="pagecount" />
+            </div>
+        </div>
+        <div class="container">
+            <apex:insert name="Body" />
+        </div>
+    </body>
+
+    </html>
+</apex:page>

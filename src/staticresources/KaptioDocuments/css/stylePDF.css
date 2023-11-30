@@ -1,0 +1,583 @@
+
+body {
+    font-family: Helvetica, sans-serif !important;
+    font-weight: 100;
+    color: var(--color-800);
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+}
+
+@page {
+    @top-left {
+        content: element(header);
+        font-family: Helvetica, sans-serif;
+        width: 100%;
+    }
+    @top-right {
+        content: " ";
+    }
+}
+
+div.kt-tab-header {
+    display: none;
+}
+
+h1 {
+    font-weight: 400;
+}
+
+h2 {
+    font-weight: 400;
+    margin-top: 0;
+}
+
+h3 {
+    text-transform: uppercase;
+}
+
+table {
+    -fs-table-paginate: paginate;
+    border-collapse: collapse;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+table td {
+    border-bottom: 1px solid var(--color-800);
+    text-align: left;
+    vertical-align: top;
+    padding: 10px 5px;
+}
+
+table th {
+    text-align: left;
+    padding: 5px 5px 5px 5px;
+    color: var(--color-800);
+    background-color: var(--color-200);
+    font-weight: 600;
+}
+
+table tr,
+table thead {
+    padding: 0;
+    margin: 0;
+}
+
+.hide-in-pdf {
+    display: none !important;
+}
+
+div.tab-pane,
+.travel-advice-content {
+    page-break-before: always;
+}
+
+.itinerary-header,
+.section-title,
+.day-to-today-content .detailed-info-container.hidden {
+    display: none;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+
+div#insext {
+    display: none;
+}
+
+div.banner-image {
+    background-size: cover;
+    width: 100%;
+}
+
+
+
+
+
+/*--- CUSTOM KT AGENDA ---*/
+
+.at-agenda-listview-listing-item-info {
+    margin-bottom: 20px;
+}
+
+.at-agenda-listview-listing-item-info .dtd-flight-info {
+    margin: 0px 0px 20px 0px;
+    page-break-inside: avoid;
+}
+
+.at-agenda-item-info-row>div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.at-agenda-item-info-row {
+    border-bottom: 1px solid var(--color-800);
+    padding: 7px 0px 7px 5px;
+    margin: 0;
+}
+
+.at-agenda-item-info-row.first {
+    background-color: var(--color-200);
+    border-bottom: none;
+}
+
+.at-agenda-item-info-row div.bold-label.table {
+    width: 140px;
+}
+
+.at-agenda-item-info-row div.table-value {
+    width: 415px;
+}
+
+.at-agenda-item-info-row p {
+    margin: 0;
+}
+
+.item-block-container {
+    margin-bottom: 10px;
+}
+
+.kt-agenda-listview-block .kt-item-header img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    height: 20px;
+}
+
+.kt-agenda-listview-block .kt-item-header h3 {
+    display: inline-block;
+}
+
+.kt-agenda-day-container {
+    margin-bottom: 35px;
+}
+
+.item-content-html p {
+    margin: 0px 0px 10px 0px;
+}
+
+/* Inline */
+div.kt-tab-custom h2 {
+    margin: 0cm 3cm;
+}
+
+h1 {
+    font-size: 45px;
+}
+
+h2 {
+    font-size: 27px;
+}
+
+h3 {
+    font-size: 12px;
+}
+
+.flights-content,
+.accommodation-content,
+div.tab-pane {
+    margin: 0 3cm;
+}
+
+div.banner-image {
+    height: 320px;
+    margin-bottom: 40px;
+}
+
+/*-------------------------*/
+
+/*--- Front Page Styles ---*/
+
+/*-------------------------*/
+
+
+
+.front-page-container {
+    text-align: center;
+    position: relative;
+    height: 23.6cm;
+
+
+}
+
+.front-page-logo {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.agent-logo {
+    margin-bottom: 50px;
+    width: 100%;
+}
+
+
+.front-page-description {
+    margin: 100px 40px 40px 40px;
+}
+
+.front-page-description h1 {
+    margin: 0px 40px;
+}
+
+.front-page-description h2 {
+    margin: 40px 0px;
+}
+.front-page-description h3 {
+    margin: 40px 0px;
+}
+          /*-------------------------*/
+
+            /*--- Pricing ---*/
+
+            .price-container {
+                padding: 0 3cm;
+            }
+
+            .price-container h3 {
+                margin: 10px 0px 20px 0px;
+                page-break-after: avoid;
+            }
+
+            .grid-container {
+                border-bottom: 1px solid var(--color-800);
+                padding: 10px 0;
+            }
+
+            .reference.grid-container {
+                border-bottom: none;
+                background-color: var(--color-200);
+            }
+
+            .grid-item {
+                display: inline-block;
+                padding: 0 5px;
+            }
+
+            .grid-container.breakdownlist {
+                border-bottom: none;
+                padding-bottom: 0;
+            }
+
+            .price-per-person-label {
+                border-bottom: 1px solid var(--color-800);
+                padding-bottom: 5px;
+            }
+
+            .grid-item.price-label {
+                /*font-weight: 600;*/
+                width: 60%;
+            }
+
+            .grid-item.margin-bottom {
+                margin-bottom: 5px;
+            }
+
+            .grid-item.price-value {
+                width: 35%;
+            }
+
+            .price-block {
+                margin-top: 30px;
+            }
+
+            .price-block p,
+            .price-block ul {
+                margin-bottom: 15px;
+            }
+
+
+
+            /*-------------------------*/
+
+            /*--- Flights ---*/
+
+            .flights-content {
+                page-break-after: always;
+            }
+
+            .flights-content .item-title {
+                text-transform: uppercase;
+                font-weight: 600;
+                margin-bottom: 25px;
+            }
+
+            .flight-info {
+                padding: 8px 5px;
+                background-color: var(--color-200);
+            }
+
+            .flight-deadline-label {
+                font-weight: 600;
+                width: 64%;
+                display: inline-block;
+            }
+
+            .flight-deadline-value {
+                width: 35%;
+                display: inline-block;
+            }
+
+            .flight-passengers {
+                padding: 5px 5px 8px 5px;
+                border-bottom: 1px solid var(--color-800);
+                margin-bottom: 25px;
+            }
+
+            .flight-passengers-label {
+                width: 64%;
+                display: inline-block;
+                vertical-align: top;
+                font-weight: 600;
+                padding: 6px 0px;
+            }
+
+            .flight-passengers-list {
+                width: 35%;
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .flight-passengers-list div {
+                padding: 6px 0px;
+            }
+
+            .flights-content p {
+                margin: 0px 0px 20px 0px;
+            }
+
+            /*-------------------------*/
+
+            /*--- Accommodation Suite ---*/
+
+            .accommodation-content .item-title {
+                text-transform: uppercase;
+                font-weight: 600;
+                margin-bottom: 25px;
+            }
+
+            .item-content-images div {
+                display: inline-block;
+                padding: 1px;
+            }
+
+
+            .accommodation-content .item-content {
+                margin-bottom: 40px;
+            }
+
+            
+
+            /*-------------------------*/
+
+            /*--- Itinerary ---*/
+
+            .day-to-day-list{
+                width:80%;
+                margin:0 auto;
+            }
+
+            .day-icons {
+                vertical-align: middle;
+                margin-top: 5px;
+            }
+
+            .date-short-info,
+            .location-short-info {
+                margin-right:40px;
+                margin-bottom: 10px;
+                display: inline-block;
+                width:40%
+            }
+
+            
+
+            .day-to-today-content .short-info-container {
+                border-bottom: 1px solid var(--color-800);
+                padding: 10px 5px 10px 5px;
+            }
+
+            .day-to-today-content .day-number {
+                width: 15%;
+                font-size:20px;
+                /* font-weight:bold; */
+                display: inline-block;
+                vertical-align: top;
+            }
+
+            .day-to-today-content .short-info {
+                width: 75%;
+                display: inline-block;
+                vertical-align: top;                
+            }
+
+            .day-to-today-content .day-short-info {
+                width: 100%;
+                vertical-align: top;
+                display: inline-block;
+                margin-right: 30px;
+            }
+
+            .day-to-today-content .items-short-info {
+                vertical-align: top;
+                display: inline-block;
+                width: 100%;
+                margin-right: 15px;                
+            }
+
+            .pdf-day-accommodations {
+                display: inline-block;
+                width: 170px;                
+            }
+
+            .pdf-day-to-day-header {
+                font-weight: 600;
+                background-color: var(--color-200);
+                padding: 8px 5px;
+            }
+
+            .dtd-day-column {
+                display: inline-block;
+                width: 22px;
+                margin-right: 15px;
+            }
+
+            .dtd-date-column {
+                display: inline-block;
+                width: 52px;
+                margin-right: 30px;
+            }
+
+            .dtd-schedule-column {
+                display: inline-block;
+                width: 240px;
+                margin-right: 15px;
+            }
+
+            .dtd-accommodation-column {
+                display: inline-block;
+            }
+
+            .day-short-info .bold-label {
+                font-weight: bold;
+            }
+
+            .day-items-list li{
+                margin-bottom: 10px;
+                width:100%;
+                position:relative;
+            }
+
+            .day-items-list .service-name{
+                position: relative;
+                margin-left: 10px;
+            }
+            .day-items-list .service-description{
+                left: 19px;
+                position: relative;
+            }
+
+            .kt-agenda-content .kt-agenda-day-header h2 {
+                text-transform: uppercase;
+                font-size: 15px !important;
+                font-weight: 600;
+                color: var(--color-600);
+
+                margin-top: 15px;
+            }
+
+            .kt-agenda-day-header,
+            .kt-item-header {
+                page-break-after: avoid;
+            }
+
+            .kt-agenda-content .item-block-subtitle,
+            .kt-agenda-content .kt-content-block-summary {
+                display: none;
+            }
+
+            .kt-agenda-content h3.item-block-title {
+                page-break-after: avoid;
+            }
+
+            .kt-agenda-content .video-images-gallery .item-image {
+                display: inline-block;
+                width: 184px;
+                height: 184px;
+                overflow: hidden;
+                margin: 2px;
+            }
+
+            .kt-agenda-content .video-images-gallery .item-image img {
+                height: 184px;
+            }
+
+            .video-images-gallery {
+                width: 100%;
+                margin-top: 5px;
+            }
+
+            .kt-agenda-listview-block .kt-item-header img {
+                display: inline-block;
+                vertical-align: middle;
+                margin-right: 10px;
+                height: 20px;
+            }
+
+            .kt-agenda-listview-block .kt-item-header h3 {
+                display: inline-block;
+            }
+
+            .hide-in-quote {
+                display: none;
+            }
+
+            p.at-agenda-listview-listing-subtitle {
+                color: var(--color-300);
+                margin: 5px 0px 15px 0px;
+            }
+
+            .item-content-html-full {
+                margin-top: 20px;
+            }
+
+            /*PACKAGE CONTENT*/
+
+            h3.item-block-title {
+                color: var(--color-400) !important;
+                margin: 0px;
+            }
+
+            .block-output.kt-heading>h1 {
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--color-800);
+                margin: 20px 0px 20px 0px;
+            }
+
+
+
+            .content-placeholder-block .kt-item-header .item-block-subtitle {
+                display: none;
+            }
+
+            .content-placeholder-block .item-content-html-full {
+                margin-top: 0px;
+            }
+
+            .content-placeholder-block .video-images-gallery .item-image {
+                display: inline-block;
+                width: 184px;
+                height: 184px;
+                overflow: hidden;
+                margin: 2px;
+            }
+
+            .content-placeholder-block .video-images-gallery .item-image img {
+                height: 184px;
+            }

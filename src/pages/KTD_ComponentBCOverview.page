@@ -1,0 +1,194 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 11-11-2022
+  @last modified by  : Kaptio Developer
+-->
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" lightningStylesheets="false" docType="html-5.0"
+    controller="KTD_ComponentBCOverviewController" id="KTD_ComponentBCOverview">
+
+    <div class="bc-overview-content">
+
+        <div class="services-info">
+
+            <table class="no-cell-borders">
+                <thead>
+                    <tr>
+                        <th>{!$Label.KTD_Label_DescriptionOfServices}</th>
+                        <th>{!$Label.KTD_Label_Quantity}</th>
+                        <th>{!$Label.KTD_Label_UnitPrice}</th>
+                        <apex:outputPanel layout="none" rendered="{!isB2B}">
+                            <th class="b2b-commission">Commission</th>
+                        </apex:outputPanel>
+                        <th class="cell-align-right">{!$Label.KTD_Label_Total}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:repeat value="{!itinerary.KaptioTravel__ItinerarySubBreakdownGroups__r}" var="bgroup" rendered="{!hasBreakdownGroups}">
+                        <tr>
+                            <td>{!bgroup.Name}</td>
+                            <td class="quantity-cell">{!bgroup.KaptioTravel__PassengerCount__c}</td>
+                            <td>{!currencySymbol}
+                                <apex:outputText value="{0,number,###,##0.00}">
+                                    <apex:param value="{!bgroup.KaptioTravel__FinalPriceOverride__c}" />
+                                </apex:outPutText>
+                            </td>
+                            <apex:outputPanel layout="none" rendered="{!isB2B}">
+                                <td class="b2b-commission">{!currencySymbol}
+                                    <apex:outputText value="{0,number,#,##0.00}">
+                                        <apex:param value="{!bgroup.KaptioTravel__ResellerCommissionTotal__c}" />
+                                    </apex:outPutText>
+                                </td>
+                            </apex:outputPanel>
+                            <td class="cell-align-right">{!currencySymbol}
+                                <apex:outputText value="{0,number,#,##0.00}">
+                                    <apex:param value="{!bgroup.KaptioTravel__SellPriceTotalOverride__c}" />
+                                </apex:outPutText>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                    <apex:outputpanel layout="none" rendered="{!NOT(hasbreakdowngroups)}">
+                        <tr>
+                            <td>{!itinerary.name}</td>
+                            <td class="quantity-cell">{!itinerary.KaptioTravel__Group_Size__c}</td>
+                            <td>{!currencySymbol}
+                                <apex:outputText value="{0,number,###,##0.00}">
+                                    <apex:param value="{!itinerary.KaptioTravel__Amount_Per_Person__c}" />
+                                </apex:outPutText>
+                            </td>
+                            <apex:outputPanel layout="none" rendered="{!isB2B}">
+                                <td class="b2b-commission">{!currencySymbol}
+                                    <apex:outputText value="{0,number,#,##0.00}">
+                                        <apex:param value="{!itinerary.KaptioTravel__ResellerCommissionTotal__c}" />
+                                    </apex:outPutText>
+                                </td>
+                            </apex:outputPanel>
+                            <td class="">
+                                {!currencySymbol}
+                                <apex:outputText value="{0,number,#,##0.00}">
+                                    <apex:param value="{!itinerary.KaptioTravel__Itinerary_Amount__c}" />
+                                </apex:outPutText>
+                            </td>
+                        </tr>
+                    </apex:outputpanel>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <div class="balance-info-section">
+            <div class="empty-block">&nbsp;</div>
+
+            <div class="balance-info">
+                <div class="column-item">
+                    <div class="column-item-label">{!$Label.KTD_Label_Total}:</div>
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!itinerary.KaptioTravel__Itinerary_Amount__c}" />
+                        </apex:outPutText>
+                    </div>
+                </div>
+                <!-- B2B-->
+                <apex:outputPanel layout="none" rendered="{!isB2B}">
+                    <div class="column-item b2b-commission">
+                        <div class="column-item-label">{!$Label.KTD_Label_Commission}:</div>
+                        <div class="column-item-desc">{!currencySymbol}
+                            <apex:outputText value="{0,number,###,###,##0.00}">
+                                <apex:param value="{!itinerary.KaptioTravel__ResellerCommissionTotal__c}" />
+                            </apex:outPutText>
+                        </div>
+                    </div>
+                    <div class="column-item b2b-commission">
+                        <div class="column-item-label">{!$Label.KTD_Label_CommissionTaxTotal}:</div>
+                        <div class="column-item-desc">{!currencySymbol}
+                            <apex:outputText value="{0,number,###,###,##0.00}">
+                                <apex:param value="{!itinerary.KaptioTravel__ResellerCommissionTaxTotal__c}" />
+                            </apex:outPutText>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <!-- -->
+                <div class="column-item">
+                    <div class="column-item-label">{!$Label.KTD_Label_PaymentReceived}:</div>
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!itinerary.KaptioTravel__Transaction_Amount__c}" />
+                        </apex:outPutText>
+                    </div>
+                </div>
+                <apex:outputPanel layout="none" rendered="{!finalBalance != itinerary.KaptioTravel__Outstanding__c}">
+                    <div class="column-item">
+                        <div class="column-item-label">{!$Label.KTD_Label_OutstandingBalance}:</div>
+                        <div class="column-item-desc">{!currencySymbol}
+                            <apex:outputText value="{0,number,###,###,##0.00}">
+                                <apex:param value="{!itinerary.KaptioTravel__Outstanding__c}" />
+                            </apex:outputText>
+                        </div>
+                    </div>
+                </apex:outputPanel>
+                <apex:repeat value="{!itinerary.KaptioTravel__Payment_Schedules__r}" var="sch">
+                    <apex:outputPanel layout="none" rendered="{!AND(sch.KaptioTravel__Type__c == 'Deposit', sch.KaptioTravel__BalanceDue__c != 0)}">
+                        <div class="column-item">
+                            <div class="column-item-label">{!$Label.KTD_Label_DepositDue}:</div>
+                            <div class="column-item-desc">{!currencySymbol}
+                                <apex:outputText value="{0,number,###,###,##0.00}">
+                                    <apex:param value="{!sch.KaptioTravel__BalanceDue__c}" />
+                                </apex:outputText>
+                            </div>
+                        </div>
+                        <div class="column-item">
+                            <div class="column-item-label">{!$Label.KTD_Label_DepositDueDate}:</div>
+                            <div class="column-item-desc">
+                                <apex:outputText value="{0,date, d MMMM YYYY}">
+                                    <apex:param value="{!sch.KaptioTravel__DateDue__c}" />
+                                </apex:outputText>
+                            </div>
+                        </div>
+                    </apex:outputPanel>
+                </apex:repeat>
+
+                <div class="column-item">
+                    <div class="column-item-label">{!$Label.KTD_Label_FinalBalance}:</div>
+                    <div class="column-item-desc">{!currencySymbol}
+                        <apex:outputText value="{0,number,###,###,##0.00}">
+                            <apex:param value="{!finalBalance}" />
+                        </apex:outputText>
+                    </div>
+                </div>
+
+                <div class="column-item">
+                    <div class="column-item-label">{!$Label.KTD_Label_FinalBalanceDueDate}:</div>
+                    <div class="column-item-desc">
+                        <b>
+                            <apex:outputText value="{0,date, d MMMM YYYY}">
+                                <apex:param value="{!itinerary.KaptioTravel__FinalPaymentExpectedDate__c}" />
+                            </apex:outputText>
+                        </b>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="additional-info">
+            <div class="column fleft">
+                <div>
+                    <div class="column-item-label">
+                        <label>{!$Label.KTD_Label_Passengers}:</label>
+                    </div>
+                    <div class="column-item-desc">
+                        <apex:variable var="index" value="{!1}" />
+                        <apex:repeat value="{!itinerary.KaptioTravel__Passengers__r}" var="pax">
+                            <div class="column-item">{!index}. {!pax.KaptioTravel__Salutation__c} {!pax.KaptioTravel__FirstName__c} {!pax.KaptioTravel__MiddleName__c}
+                                {!pax.KaptioTravel__LastName__c}
+                            </div>
+                            <apex:variable var="index" value="{!index + 1}" />
+                        </apex:repeat>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</apex:page>

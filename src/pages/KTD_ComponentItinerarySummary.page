@@ -1,0 +1,157 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 10-12-2023
+  @last modified by  : Kaptio Developer
+-->
+<apex:page showHeader="false" sidebar="false" standardStylesheets="false" lightningStylesheets="false" docType="html-5.0"
+    controller="KTD_ComponentItinerarySummaryController" id="KTD_ComponentItinerarySummary">
+
+    <apex:outputPanel layout="none" rendered="{!output.size != 0}">
+
+        <!-- HEADER -->
+        <div class="kt-tab-custom">
+            <h2 class="section-title">{!$Label.KTD_Heading_YourItinerary}</h2>
+        </div>
+        <!-- END OF HEADER -->
+
+        <!-- MAIN CONTENT -->
+        <div class="day-to-today-content">
+
+
+            <ul class="day-to-day-list">
+                <apex:repeat value="{!output}" var="day">
+                    <apex:outputPanel layout="none" rendered="{!OR(day.currentDate != itinerary.KaptioTravel__End_Date__c, day.startsOnLastDay)}">
+                        <li>
+                            <!-- Short Day Info -->
+                            <div class="short-info-container">
+                                <div class="day-number">
+                                    <span>
+                                        <span class="">{!$Label.KTD_Text_Day} </span>{!day.dayNumber}</span>
+                                </div>
+                                <div class="short-info">
+                                    <div class="row day-short-info">
+                                        <div class="col-md-6 bold-label date-short-info">
+                                            <apex:outputText value="{0,date,{!dateFormatWeb}}">
+                                                <apex:param value="{!day.currentDate}" />
+                                            </apex:outputText>
+                                            <!-- <apex:outputText value="{0,date,{!dateFormatPdf}}" styleClass="hide-in-html">
+                                                <apex:param value="{!day.currentDate}" />
+                                            </apex:outputText> -->
+                                        </div>
+                                        <div class="col-md-6 location-short-info bold-label">
+                                            <apex:outputPanel layout="none" rendered="{!AND(day.locationOutput != '', day.locationOutput != null)}">
+                                                <img src="{!URLFOR($Resource.KaptioDocuments, '/images/icons/place_outline.svg')}" height="20px" class="hide-in-pdf" />
+                                                <span>{!day.locationOutput}</span>
+                                            </apex:outputPanel>
+                                            <apex:outputPanel layout="none" rendered="{!OR(day.locationOutput == '', day.locationOutput == null)}">
+                                                <apex:outputPanel layout="none">
+                                                    <span style="font-size: 13px;">{!day.allocationOutput}</span>
+                                                </apex:outputPanel>
+
+                                            </apex:outputPanel>
+                                        </div>
+                                    </div>
+                                    <div class="items-short-info">
+                                        <!-- <apex:outputPanel layout="none" rendered="{!day.locationOutput != ''}">
+                                            <span class="location-short-info hide-in-html">{!day.locationOutput}</span>
+                                        </apex:outputPanel> -->
+
+                                        <ul class="day-items-list">
+                                            <apex:repeat value="{!day.dayItems}" var="item">
+
+                                                <li>
+                                                    <apex:outputPanel layout="none" rendered="{!OR(day.currentDate != itinerary.KaptioTravel__End_Date__c, day.startsOnLastDay)}">
+                                                        <apex:outputPanel layout="none" rendered="{!AND(item.KaptioTravel__RecordTypeName__c != 'FlightPlaceholder', item.KaptioTravel__RecordTypeName__c != 'PNRFlight')}">
+                                                            <apex:repeat value="{!iconByItemType}" var="key">
+                                                                <apex:outputPanel layout="none" rendered="{!key == item.KaptioTravel__RecordTypeName__c}">
+                                                                    <img src="{!URLFOR($Resource.KaptioDocuments, iconByItemType[key])}" class="hide-in-pdf" height="25px" />
+                                                                </apex:outputPanel>
+                                                            </apex:repeat>
+                                                            <apex:repeat value="{!iconByItemTypePDF}" var="key">
+                                                                <apex:outputPanel layout="none" rendered="{!key == item.KaptioTravel__RecordTypeName__c}">
+                                                                    <img src="{!URLFOR($Resource.KaptioDocuments, iconByItemTypePDF[key])}" class="hide-in-pdf" height="25px" />
+                                                                </apex:outputPanel>
+                                                            </apex:repeat>
+                                                            <span class="service-name">
+                                                                <b>{!item.KaptioTravel__ExternalItemName__c}</b>
+                                                            </span>
+                                                            <apex:outputPanel rendered="{!OR(item.KaptioTravel__RecordTypeName__c == 'Cruise', item.KaptioTravel__RecordTypeName__c == 'MultidayRail', item.KaptioTravel__RecordTypeName__c == 'Accommodation', item.KaptioTravel__RecordTypeName__c == 'Activity')}"
+                                                                styleClass="service-description">
+                                                                <apex:repeat value="{!day.priceCategoriesByItem[item.KaptioTravel__Item__c + '_' + item.KaptioTravel__ExternalItemName__c]}"
+                                                                    var="priceCategory">
+                                                                    <br />{!day.qntyByPriceCategory[item.KaptioTravel__Item__c
+                                                                    + '_' + priceCategory]}x {!priceCategory}
+                                                                </apex:repeat>
+                                                            </apex:outputPanel>
+                                                            <apex:outputPanel rendered="{!AND(item.KaptioTravel__RecordTypeName__c != 'Cruise', item.KaptioTravel__RecordTypeName__c != 'MultidayRail', item.KaptioTravel__RecordTypeName__c != 'Accommodation', item.KaptioTravel__RecordTypeName__c != 'Activity')}"
+                                                                styleClass="service-description">
+                                                                <apex:repeat value="{!day.priceCategoriesByItem[item.KaptioTravel__Item__c + '_' + item.KaptioTravel__ExternalItemName__c]}"
+                                                                    var="priceCategory">
+                                                                    <br />{!priceCategory}
+                                                                </apex:repeat>
+                                                            </apex:outputPanel>
+
+                                                        </apex:outputPanel>
+                                                        <apex:outputPanel layout="none" rendered="{!OR(item.KaptioTravel__RecordTypeName__c == 'FlightPlaceholder', item.KaptioTravel__RecordTypeName__c == 'PNRFlight')}"
+                                                            styleClass="service-description">
+                                                            <apex:repeat value="{!day.flightLegMap[item.Id]}" var="flight">
+                                                                <apex:outputPanel layout="block" rendered="{!flight.departureDate == day.currentDate}">
+                                                                    <img src="{!URLFOR($Resource.KaptioDocuments, iconByItemType['FlightPlaceholder'])}" class="" height="25px" />
+                                                                    <!--<img src="{!URLFOR($Resource.KaptioDocuments, iconByItemTypePDF['FlightPlaceholder'])}" class="day-icons hide-in-html" height="25px"
+                                                                    /> -->
+                                                                    <span>
+                                                                        <apex:outputPanel rendered="{!item.KaptioTravel__RecordTypeName__c == 'FlightPlaceholder'}">
+                                                                            <b>{!flight.departureAirportName} {!flight.departureTime}
+                                                                                - {!flight.arrivalAirportName} {!flight.arrivalTime}</b>
+                                                                        </apex:outputPanel>
+                                                                        <apex:outputPanel rendered="{!item.KaptioTravel__RecordTypeName__c == 'PNRFlight'}">
+                                                                            <b>{!flight.departureAirportName} {!flight.departureTime}
+                                                                                {!flight.departureTerminal} - {!flight.arrivalAirportName}
+                                                                                {!flight.arrivalTime} {!flight.arrivalTerminal}</b>
+                                                                        </apex:outputPanel>
+                                                                        <apex:variable var="dateDiff" value="{!day.dateDiffByFlightLegId[flight.Id]}" />
+                                                                        <apex:outputText value=" ({!IF(dateDiff >= 0, '+', '')}{!dateDiff})" rendered="{!dateDiff != 0}" />
+                                                                    </span>
+                                                                    <br></br>{!flight.travelClass}
+                                                                </apex:outputPanel>
+                                                            </apex:repeat>
+                                                        </apex:outputPanel>
+                                                    </apex:outputPanel>
+
+                                                </li>
+                                            </apex:repeat>
+                                            <li>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- <div class="pdf-day-accommodations hide-in-html">
+                                        <apex:outputPanel layout="block">
+                                            {!day.allocationOutput}
+                                        </apex:outputPanel>
+
+                                        <apex:repeat value="{!day.dayItems}" var="accommodation">
+                                            <apex:outputPanel layout="block" rendered="{!accommodation.KaptioTravel__RecordTypeName__c == 'Accommodation'}">
+                                                <b>{!accommodation.KaptioTravel__ExternalItemName__c}</b>
+                                                <apex:repeat value="{!day.priceCategoriesByItem[accommodation.KaptioTravel__Item__c + '_' + accommodation.KaptioTravel__ExternalItemName__c]}"
+                                                    var="priceCategory">
+                                                    <br></br>{!day.qntyByPriceCategory[accommodation.KaptioTravel__Item__c +
+                                                    '_' + priceCategory]}x {!priceCategory}
+                                                </apex:repeat>
+                                            </apex:outputPanel>
+                                        </apex:repeat>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <!-- End of Short Day Info -->
+                        </li>
+                    </apex:outputPanel>
+                </apex:repeat>
+            </ul>
+        </div>
+        <!-- END MAIN CONTENT -->
+    </apex:outputPanel>
+</apex:page>

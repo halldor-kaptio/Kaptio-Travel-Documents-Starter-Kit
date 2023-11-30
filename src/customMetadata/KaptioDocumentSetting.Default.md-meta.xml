@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default</label>
+    <protected>false</protected>
+    <values>
+        <field>Channels__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color100__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color200__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color300__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color400__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color500__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color600__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color700__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Color800__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>ContactUs__c</field>
+        <value xsi:type="xsd:string">https://mbl.is</value>
+    </values>
+    <values>
+        <field>DocumentType__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>Facebook__c</field>
+        <value xsi:type="xsd:string">https://facebook.com</value>
+    </values>
+    <values>
+        <field>Instagram__c</field>
+        <value xsi:type="xsd:string">https://instagram.com</value>
+    </values>
+    <values>
+        <field>LogoHeight__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>LogoInvoiceHeight__c</field>
+        <value xsi:type="xsd:double">100.0</value>
+    </values>
+    <values>
+        <field>LogoInvoiceURL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>LogoInvoiceWidth__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>LogoPDFHeight__c</field>
+        <value xsi:type="xsd:double">100.0</value>
+    </values>
+    <values>
+        <field>LogoPDFURL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>LogoPDFWidth__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>LogoURL__c</field>
+        <value xsi:nil="true"/>
+    </values>
+    <values>
+        <field>LogoWidth__c</field>
+        <value xsi:type="xsd:double">200.0</value>
+    </values>
+    <values>
+        <field>NavigationType__c</field>
+        <value xsi:type="xsd:string">Horizontal</value>
+    </values>
+    <values>
+        <field>PrivacyPolicy__c</field>
+        <value xsi:type="xsd:string">https://mbl.is</value>
+    </values>
+    <values>
+        <field>TermsOfUse__c</field>
+        <value xsi:type="xsd:string">https://mbl.is</value>
+    </values>
+    <values>
+        <field>Twitter__c</field>
+        <value xsi:type="xsd:string">https://x.com</value>
+    </values>
+    <values>
+        <field>WebsiteFeedback__c</field>
+        <value xsi:type="xsd:string">https://mbl.is</value>
+    </values>
+</CustomMetadata>

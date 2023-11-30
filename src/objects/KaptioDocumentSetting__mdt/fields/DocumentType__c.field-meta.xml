@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DocumentType__c</fullName>
+    <description>The Stage Type Categories which this setting record applies to as a comma separated string. If left empty this record applies to all Stage Type Categories</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Please enter the Stage Type Categories which this setting record applies to as a comma separated string. Leave empty for all Stage Type Categories</inlineHelpText>
+    <label>Document Type</label>
+    <required>false</required>
+    <type>TextArea</type>
+</CustomField>

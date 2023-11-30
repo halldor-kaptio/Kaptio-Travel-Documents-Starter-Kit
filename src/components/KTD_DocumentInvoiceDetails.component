@@ -1,0 +1,91 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 11-06-2022
+  @last modified by  : Kaptio Developer
+-->
+<apex:component id="KTD_DocumentInvoiceDetails">
+
+    <apex:attribute name="isB2B" type="Boolean" description="Defines whether the current document is for a b2b or b2c channel"
+        required="true" />
+    <apex:attribute name="isPersonAccount" type="Boolean" description="Defines whether the primary contact is a person account or not"
+        required="true" />
+    <apex:attribute name="Itinerary" type="KaptioTravel__Itinerary__c" description="Itinerary" required="true" />
+    <apex:attribute name="ItineraryDocument" type="KaptioTravel__ItineraryContent__c" description="The Itinerary Document" required="true"
+    />
+
+    <apex:attribute name="documentPublishedDate" type="String" description="formatted publish date of the document" required="true"
+    />
+
+    <div class="main-info">
+        <div class="column left">
+            <div class="column-item">
+                <div class="column-item-label">
+                    <label>{!$Label.KTD_Label_Name}:</label>
+                </div>
+                <div class="column-item-desc">{!itinerary.KaptioTravel__Primary_Contact__r.FirstName} {!itinerary.KaptioTravel__Primary_Contact__r.LastName}</div>
+            </div>
+            <apex:outputPanel layout="block" styleClass="column-item">
+                <div class="column-item-label">
+                    <label>{!$Label.KTD_Label_Address}:</label>
+                </div>
+                <div class="column-item-desc">
+                    <apex:outputPanel layout="none" rendered="{!AND(isB2B == false, isPersonAccount)}">
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.MailingStreet}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.MailingCity}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.MailingState}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.MailingPostalCode}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.MailingCountry}</div>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="none" rendered="{!AND(isB2B == false, NOT(isPersonAccount))}">
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.Account.BillingStreet}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.Account.BillingCity}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.Account.BillingState}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.Account.BillingPostalCode}</div>
+                        <div>{!itinerary.KaptioTravel__Primary_Contact__r.Account.BillingCountry}</div>
+                    </apex:outputPanel>
+                    <apex:outputPanel layout="none" rendered="{!isB2B}">
+                        <div>{!itinerary.KaptioTravel__Account__r.Name}</div>
+                        <div>{!itinerary.KaptioTravel__Account__r.ShippingStreet}</div>
+                        <div>{!itinerary.KaptioTravel__Account__r.ShippingCity}</div>
+                        <div>{!itinerary.KaptioTravel__Account__r.ShippingState}</div>
+                        <div>{!itinerary.KaptioTravel__Account__r.ShippingPostalCode}</div>
+                        <div>{!itinerary.KaptioTravel__Account__r.ShippingCountry}</div>
+                    </apex:outputPanel>
+                </div>
+
+            </apex:outputPanel>
+        </div>
+        <div class="column">
+            <div class="column-item">
+                <div class="column-item-label">
+                    <label>{!$Label.KTD_Label_IssueDate}:</label>
+                </div>
+                <div class="column-item-desc">{!documentPublishedDate}
+                    <apex:outputText value=" (TBD)" rendered="{!ItineraryDocument.KaptioTravel__PublishedDate__c = null}" styleClass="date-tbd"
+                    />
+                </div>
+            </div>
+            <div class="column-item">
+                <div class="column-item-label">
+                    <label>{!$Label.KTD_Label_ReferenceNumber}:</label>
+                </div>
+                <div class="column-item-desc">{!itinerary.KaptioTravel__VersionNumber__c}</div>
+            </div>
+            <div class="column-item">
+                <div class="column-item-label">
+                    <label>{!$Label.KTD_Label_ConfirmationNumber}:</label>
+                </div>
+                <div class="column-item-desc">{!ItineraryDocument.Name}</div>
+            </div>
+            <div class="column-item">
+                <div class="column-item-label">
+                    <label>{!$Label.KTD_Label_YourConsultant}:</label>
+                </div>
+                <div class="column-item-desc">{!itinerary.Owner.Name}</div>
+            </div>
+        </div>
+    </div>
+
+</apex:component>

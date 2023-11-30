@@ -1,0 +1,138 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 09-11-2022
+  @last modified by  : Kaptio Developer
+-->
+<apex:page id="KTD_ComponentPricing" showHeader="false" sidebar="false" standardStylesheets="false" controller="KTD_ComponentPricingController">
+
+    <h2 class="section-title">{!$Label.KTD_Heading_Pricing}</h2>
+
+    <!-- Price Container --> 
+    <div class="price-container">
+
+        <!-- Quote Reference --> 
+        <div class="reference grid-container">
+            <div class="price-label grid-item">
+                <b>{!$Label.KTD_Label_QuoteReference}</b>
+            </div>
+            <div class="price-value grid-item">{!itinerary.KaptioTravel__VersionNumber__c}</div>
+        </div>
+
+        <!-- Groups Breakdown -->
+        <apex:outputPanel layout="none" rendered="{!breakdownGroups.size != 0}">
+            <div class="grid-container breakdownlist">
+                <apex:repeat value="{!breakdownGroups}" var="bgroup">
+                    <div class="price-label grid-item margin-bottom">
+                        <b>
+                            <apex:outputPanel rendered="{!AND(bgroup.Name != 'Package Price', bgroup.Name != 'Elite Value Add')}">
+                                {!bgroup.Name}
+                            </apex:outputPanel>
+                        </b>
+                    </div>
+                    <div class="price-value grid-item">
+                        <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                            <apex:param value="{!bgroup.KaptioTravel__FinalPriceOverride__c}" />
+                        </apex:outputText>
+                    </div>
+                </apex:repeat>
+            </div>
+        </apex:outputPanel>
+        <apex:outputpanel layout="block" styleclass="price-per-person-label" rendered="{!breakdownGroups.size > 0}">{!$Label.KTD_Label_PricePerPerson}</apex:outputpanel>
+
+        <!-- Total Price -->
+        <div class="grid-container">
+            <div class="price-label grid-item">
+                <b>{!$Label.KTD_Label_Total}</b>
+            </div>
+            <div class="price-value grid-item">
+                <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                    <apex:param value="{!itinerary.KaptioTravel__Itinerary_Amount__c}" />
+                </apex:outputText>
+            </div>
+        </div>
+
+        <!-- Show Deposit -->
+        <apex:outputPanel layout="block" styleClass="grid-container breakdownlist" rendered="{!showDeposit}">
+            <!-- <div class="grid-container"> -->
+            <div class="price-label grid-item margin-bottom">
+                <b>{!$Label.KTD_Label_DepositPerPerson}</b>
+            </div>
+            <div class="price-value grid-item margin-bottom">
+                <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                    <apex:param value="{!depositPerPerson}" />
+                </apex:outputText>
+            </div>
+            <div class="price-label grid-item">
+                <b>{!$Label.KTD_Label_TotalDeposit}</b>
+            </div>
+            <div class="price-value grid-item">
+                <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                    <apex:param value="{!itinerary.KaptioTravel__DepositAmount__c}" />
+                </apex:outputText>
+            </div>
+            <!-- </div> -->
+        </apex:outputPanel>
+
+        <!-- Only display total paid if Amount is greater than 0 -->
+        <apex:outputPanel layout="block" styleClass="grid-container breakdownlist" rendered="{!itinerary.KaptioTravel__Transaction_Amount__c > 0}">
+            <div class="price-label grid-item">
+                <b>{!$Label.KTD_Label_TotalPaid}</b>
+            </div>
+            <div class="price-value grid-item">
+                <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                    <apex:param value="{!itinerary.KaptioTravel__Transaction_Amount__c}" />
+                </apex:outputText>
+            </div>
+        </apex:outputPanel>
+
+        <!-- Only display Reseller Commission Total if Amount is greater than 0 -->
+        <apex:outputPanel layout="block" styleClass="grid-container breakdownlist" rendered="{!itinerary.KaptioTravel__ResellerCommissionTotal__c > 0}">
+            <div class="price-label grid-item">
+                <b>{!$Label.KTD_Label_Commission}</b>
+            </div>
+            <div class="price-value grid-item">
+                <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                    <apex:param value="{!itinerary.KaptioTravel__ResellerCommissionTotal__c}" />
+                </apex:outputText>
+            </div>
+        </apex:outputPanel>
+
+        <!-- Balance -->
+        <div class="grid-container">
+            <div class="price-label grid-item">
+                <b>{!$Label.KTD_Label_FinalBalance}</b>
+            </div>
+            <div class="price-value grid-item">
+                <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                    <apex:param value="{!itinerary.KaptioTravel__Outstanding__c}" />
+                </apex:outputText>
+            </div>
+        </div>
+
+        <!-- Optional Groups Breakdown -->
+        <apex:outputPanel layout="none" rendered="{!optionalBreakdownGroups.size != 0}">
+            <div class="grid-container breakdownlist">
+                <div class="price-label grid-item margin-bottom">
+                    <b>{!$Label.KTD_Label_UpgradeOptions}:</b>
+                </div>
+                <div class="price-value grid-item margin-bottom"></div>
+                <apex:repeat value="{!optionalBreakdownGroups}" var="bgroup">
+                    <div class="price-label grid-item">
+                        <b>
+                            <apex:outputtext value="{!bgroup.Name}" />
+                        </b>
+                    </div>
+                    <div class="price-value grid-item">
+                        <apex:outputText value="{0, number, {!currencySymbol}###,###,##0{!decimalPlacesString}}">
+                            <apex:param value="{!bgroup.KaptioTravel__FinalPriceOverride__c}" />
+                        </apex:outputText>
+                    </div>
+                </apex:repeat>
+            </div>
+        </apex:outputPanel>
+        <apex:outputpanel layout="block" styleclass="price-per-person-label" rendered="{!optionalBreakdownGroups.size > 0}">{!$Label.KTD_Label_PricePerPerson}</apex:outputpanel>
+    </div>
+
+</apex:page>

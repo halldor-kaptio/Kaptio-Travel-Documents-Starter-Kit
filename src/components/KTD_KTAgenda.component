@@ -1,0 +1,1258 @@
+<!--
+  @description       : 
+  @author            : Kaptio Developer
+  @group             : 
+  @last modified on  : 10-11-2023
+  @last modified by  : Kaptio Developer
+-->
+<apex:component id="KTD_KTAgenda" layout="none">
+    <apex:attribute name="dateFormat" type="String" required="true" description="The date format of day heading" />
+    <apex:attribute name="agent" type="User" description="Agent Info" required="true" />
+    <apex:attribute name="shortFormat" type="String" description="Short date format" required="false" />
+
+    <style>
+        .at-agenda-listview-image-cover {
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            height: 200px;
+            margin-bottom: 15px;
+        }
+
+        div.dtd-flight-info:first-child {
+            margin-top: 0px !important;
+        }
+
+        .kt-agenda-content {
+            padding: 0;
+        }
+
+        .kt-agenda-content .at-agenda-view-wrapper {
+            padding: 0;
+        }
+
+        .at-agenda-day-heading-section {
+            margin-bottom: 20px;
+        }
+
+        .kt-agenda-content .at-agenda-day-heading-output {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .kt-agenda-content .at-agenda-listview-listing-box {
+            background-color: #EDF0F2;
+            padding: 30px 25px 20px 25px;
+            margin-bottom: 30px;
+        }
+
+        .kt-agenda-content .at-agenda-listview-listing-box.more-content {
+            cursor: pointer;
+        }
+
+        .at-agenda-listview-listing-box:hover {
+            transform: scale(1);
+        }
+
+        .kt-agenda-content .at-flight-heading-output {
+
+            position: relative;
+            /*padding-left: 35px;*/
+            margin: 0px 0px 20px 0px;
+
+        }
+
+        .kt-agenda-content .at-agenda-listview-listing-title {
+            position: relative;
+            /*padding-left: 35px;*/
+            margin: 0px 0px 20px 0px;
+        }
+
+        .at-agenda-listview-listing-box.Flight .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.FlightPlaceholder .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.PNRFlight .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Accommodation .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Excursion .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Package_Item .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Transfer .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Car_Rental .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Cruise .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Rail .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.ManualRail .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.Activity .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.MultiDayItem .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.iiShipLine .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.iiDepartureLocationLine .at-agenda-listview-listing-title,
+        .at-agenda-listview-listing-box.MultidayRail .at-agenda-listview-listing-title,
+        .kt-agenda-content .at-flight-heading-output {
+            padding-left: 35px;
+        }
+
+        .at-agenda-listview-listing-box .at-agenda-listview-listing-title:before,
+        .kt-agenda-content .at-flight-heading-output:before {
+            background-size: contain;
+            background-repeat: no-repeat;
+            display: block;
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            left: 0;
+            top: -3px;
+        }
+
+        .modal-content .modal-title:before {
+            background-size: contain;
+            display: block;
+            width: 25px;
+            height: 25px;
+            position: absolute;
+            left: 30px;
+        }
+
+        .at-agenda-listview-listing-box.Flight .at-agenda-listview-listing-title:before,
+        .at-agenda-listview-listing-box.FlightPlaceholder .at-agenda-listview-listing-title:before,
+        .at-agenda-listview-listing-box.PNRFlight .at-agenda-listview-listing-title:before,
+        .modal-content.Flight .modal-title:before,
+        .modal-content.FlightPlaceholder .modal-title:before,
+        .modal-content.PNRFlight .modal-title:before,
+        .kt-agenda-content .at-flight-heading-output:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/plane_outline.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.Accommodation .at-agenda-listview-listing-title:before,
+        .modal-content.Accommodation .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/accom_outline.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.Excursion .at-agenda-listview-listing-title:before,
+        .modal-content.Excursion .modal-title:before,
+        .at-agenda-listview-listing-box.Package_Item .at-agenda-listview-listing-title:before,
+        .modal-content.Package_Item .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/tour_outline.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.Transfer .at-agenda-listview-listing-title:before,
+        .modal-content.Transfer .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/transfer_outline.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.Car_Rental .at-agenda-listview-listing-title:before,
+        .modal-content.Car_Rental .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/car_outlines.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.Cruise .at-agenda-listview-listing-title:before,
+        .modal-content.Cruise .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/cruise_outline.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.iiShipLine .at-agenda-listview-listing-title:before,
+        .modal-content.iiShipLine .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/cruise_outline.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.Rail .at-agenda-listview-listing-title:before,
+        .modal-content.Rail .modal-title:before,
+        .at-agenda-listview-listing-box.ManualRail .at-agenda-listview-listing-title:before,
+        .modal-content.ManualRail .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/rail.png')}');
+        }
+
+        .at-agenda-listview-listing-box.MultidayRail .at-agenda-listview-listing-title:before,
+        .modal-content.MultidayRail .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/rail.png')}');
+        }
+
+        .at-agenda-listview-listing-box.Activity .at-agenda-listview-listing-title:before,
+        .modal-content.Activity .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/activity_outlines.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.MultiDayItem .at-agenda-listview-listing-title:before,
+        .modal-content.MultiDayItem .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/calendar_outline.svg')}');
+        }
+
+        .at-agenda-listview-listing-box.iiDepartureLocationLine .at-agenda-listview-listing-title:before,
+        .modal-content.iiDepartureLocationLine .modal-title:before {
+            content: ' ';
+            background-image: url('{!URLFOR($Resource.KaptioDocuments, '/images/icons/place_outline.svg')}');
+            width: 17.5px;
+        }
+
+        .kt-agenda-content .at-agenda-listview-listing-more-content {
+            /*color: #808080;*/
+        }
+
+        .kt-agenda-content .at-agenda-listview-listing-more-content:hover {
+            color: #343434;
+            text-decoration: none;
+        }
+
+        p.at-agenda-listview-listing-subtitle {
+            color: #808080;
+            margin-bottom: 20px;
+        }
+
+        .at-agenda-listview-listing-content-container {
+            margin-bottom: 10px;
+            /*display: flex;*/
+        }
+
+        .at-agenda-listview-listing-image {
+            /*margin: 0px 20px 0px 0px;*/
+            margin-bottom: 15px;
+            height: fit-content;
+        }
+
+        .at-agenda-listview-listing-content-with-image {
+            height: 177px;
+        }
+
+        .at-agenda-listview-listing-content {
+            margin-bottom: 15px;
+        }
+
+        .at-agenda-listview-listing-item-info {
+            /*margin-bottom: 25px;*/
+        }
+
+        /*MODAL*/
+
+        #customAgendaModal .modal-header {
+            padding-left: 0px;
+        }
+
+        #customAgendaModal .modal-title {
+            margin-left: 40px;
+        }
+
+        #customAgendaModal .modal-body {
+            padding: 15px 0px;
+        }
+
+        #customAgendaModal .close {
+            font-weight: 100;
+            line-height: 0.5;
+            font-size: 32px;
+        }
+
+        #customAgendaModal .close:focus {
+            outline: 0;
+            /*box-shadow: none!important;*/
+        }
+
+        #customAgendaModal .kt-agenda-gallery-header {
+            margin-bottom: 20px;
+        }
+
+        #customAgendaModal .kt-agenda-showview-content {
+            font-size: 14px;
+        }
+
+        #customAgendaModal .modal-content {
+            /*width: 900px;*/
+        }
+
+        #customKtAgendaTemplate .bold-label,
+        .rich-text-field {
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        #customKtAgendaTemplate .bold-label {
+            margin-right: 8px;
+        }
+    </style>
+
+    <script id="customKtAgendaTemplate" type="text/template">
+        <!-- Component Header -->
+        <div class="kt-tab-custom"><h2>{{getComponentHeader listings}}</h2></div>
+
+        <div class="at-agenda-view-wrapper">
+            {{#compare view "==" "listView"}}
+                <div class="at-agenda-listview-block">
+                    <div class="at-agenda-listview-content">
+                        <div class="at-agenda-listview-mode">
+                            <h3 class="at-flight-heading-output">
+                                {{getFlightHeader listings}}
+                            </h3> 
+                            <!--
+                            <div class="at-agenda-day-heading-section">
+                                <span class="at-flight-heading-output">{{getFlightHeader listings}}</span>
+                            </div>
+                            -->
+                            {{#each listingsToShowGroupedByDay}}
+                                <!-- {{#unless isEmptyDay}} -->
+                                    <div class="at-agenda-day-wrapper"> <!-- will be closed at the end of day-->
+                                        <!-- Day Header -->
+                                        <div class="at-agenda-day-heading-section">
+                                            <span class="at-agenda-day-heading-output" data-current-day="{{day}}"></span>
+                                        </div>
+
+                                        <!-- Service Output -->
+                                        <div class="at-agenda-service-wrapper">
+                                            {{#each listings}}
+                                                {{#if isVisible}}
+                                                    <div class="at-agenda-listview-listing-box {{recordTypeName}}{{lineType}} {{#if showContent}}more-content{{/if}}" data-listing-index="{{index}}" data-show-listing-index="{{@index}}" data-showgroup-listing-index="{{@../index}}">
+
+                                                        <h3 class="at-agenda-listview-listing-title">
+                                                            {{getListingTitle this}}
+                                                        </h3>
+                                                        {{#if showContent}}
+                                                            <p class="at-agenda-listview-listing-subtitle">
+                                                                {{subtitle}}
+                                                            </p>
+                                                        {{/if}}
+
+
+                                                        <div class="row at-agenda-listview-listing-content-container">
+                                                            {{#if showContent}}
+                                                            <!-- {{#if imageUrl}} -->
+                                                            {{#compare imageUrl "!=" "null"}}
+                                                            <div class="col-md-4 col-sm-12">
+                                                                <div class="at-agenda-listview-image-cover" style="background-image: url('https://res.cloudinary.com/kaptio/image/fetch/c_fill,g_face,f_auto/{{imageUrl}}')"></div>
+                                                              
+                                                            </div>
+                                                            {{/compare}}
+                                                            <!-- {{/if}} -->
+                                                            {{/if}}
+                                                            
+                                                          <div class="{{#if showContent}}{{#compare imageUrl "!=" "null"}}col-md-8{{/compare}}{{/if}} col-sm-12">
+                                                                <div class="at-agenda-listview-listing-item-info">
+                                                                    <!-- FLIGHT PLACEHOLDER -->
+                                                                    {{#compare recordTypeName "==" "FlightPlaceholder"}}
+                                                                        {{#each flightLegs}}
+                                                                            <div class="dtd-flight-info">
+                                                                                <p class="bold-label">{{KaptioTravel__DepartureAirportName__c}} {!$Label.KTD_Text_To} {{KaptioTravel__ArrivalAirportName__c}}</p> 
+                                                                                
+                                                                                {{#if KaptioTravel__FlightNumber__c}}
+                                                                                    <p><span class="bold-label">Flight number: </span>{{KaptioTravel__FlightNumber__c}}</p>{{/if}} 
+                                                                                {{#if KaptioTravel__Airline__r.Name}}
+                                                                                    <p><span class="bold-label">{!$Label.KTD_Label_Airline}: </span>{{KaptioTravel__Airline__r.Name}}</p> 
+                                                                                {{/if}}
+                                                                                {{#if KaptioTravel__OperatedBy__r.Name}}
+                                                                                    <p><span class="bold-label">Operated by: </span>{{KaptioTravel__OperatedBy__r.Name}}</p> 
+                                                                                {{/if}}
+                                                                                
+                                                                                {{#if KaptioTravel__DepartureTime__c}}
+                                                                                    <p><span class="bold-label">{!$Label.KTD_Label_Dep}: </span>{{KaptioTravel__DepartureTime__c}}</p> 
+                                                                                {{/if}}
+                                                                                {{#if KaptioTravel__ArrivalTime__c}}
+                                                                                    <p>
+                                                                                        <span class="bold-label">{!$Label.KTD_Label_Arr}: </span>{{KaptioTravel__ArrivalTime__c}}
+                                                                                        {{#if isNextDayArriving}}
+                                                                                            &nbsp;{!$Label.KTD_Text_NextDay}
+                                                                                        {{/if}}
+                                                                                    </p> 
+                                                                                {{/if}}
+                                                                                {{#if KaptioTravel__TravelClass__c}}
+                                                                                    <p><span class="bold-label">{!$Label.KTD_Label_Class}: </span>{{KaptioTravel__TravelClass__c}}</p> 
+                                                                                {{/if}}
+                                                                                {{#if passengers}}
+                                                                                    <p><span class="bold-label">Passengers:</span> {{passengers}}</p>
+                                                                                {{/if}}
+                                                                                {{#if isNonStopFlight}}
+                                                                                    <p class="bold-label">{!$Label.KTD_Text_NonStopFlight}</p>
+                                                                                {{/if}}
+                                                                            </div>
+                                                                        {{/each}}
+                                                                    {{/compare}}
+
+                                                                    <!-- PNR FLIGHT -->
+                                                                    {{#compare recordTypeName "==" "PNRFlight"}}
+                                                                        {{#each flightLegs}}
+                                                                            <div class="dtd-flight-info">
+                                                                                <p class="bold-label">{{KaptioTravel__DepartureAirport__r.Name}} {!$Label.KTD_Text_To} {{KaptioTravel__ArrivalAirport__r.Name}}</p> 
+                                                                                
+                                                                                <p><span class="bold-label">{!$Label.KTD_Label_Airline}: </span>{{KaptioTravel__Airline__r.Name}} - {!$Label.KTD_Label_FlightNo}: {{KaptioTravel__FlightNumber__c}}</p> 
+
+                                                                                {{#if KaptioTravel__FlightNumber__c}}
+                                                                                    <p><span class="bold-label">Flight number: </span>{{KaptioTravel__FlightNumber__c}}</p>{{/if}} 
+                                                                                {{#if KaptioTravel__Airline__r.Name}}
+                                                                                    <p><span class="bold-label">{!$Label.KTD_Label_Airline}: </span>{{KaptioTravel__Airline__r.Name}}</p> 
+                                                                                {{/if}}
+                                                                                {{#if KaptioTravel__OperatedBy__r.Name}}
+                                                                                    <p><span class="bold-label">Operated by: </span>{{KaptioTravel__OperatedBy__r.Name}}</p> 
+                                                                                {{/if}}
+                                                                                
+                                                                                {{#if KaptioTravel__DepartureTime__c}}
+                                                                                    <p><span class="bold-label">{!$Label.KTD_Label_Dep}: </span>{{KaptioTravel__DepartureTime__c}}</p> 
+                                                                                {{/if}}
+                                                                                {{#if KaptioTravel__ArrivalTime__c}}
+                                                                                    <p>
+                                                                                        <span class="bold-label">{!$Label.KTD_Label_Arr}: </span>{{KaptioTravel__ArrivalTime__c}}
+                                                                                        {{#if isNextDayArriving}}
+                                                                                            &nbsp;{!$Label.KTD_Text_NextDay}
+                                                                                        {{/if}}
+                                                                                    </p> 
+                                                                                {{/if}}
+                                                                                {{#if KaptioTravel__TravelClass__c}}
+                                                                                    <p><span class="bold-label">{!$Label.KTD_Label_Class}: </span>{{KaptioTravel__TravelClass__c}}</p> 
+                                                                                {{/if}}
+                                                                                {{#if passengers}}
+                                                                                    <p><span class="bold-label">Passengers:</span> {{passengers}}</p>
+                                                                                {{/if}}
+                                                                                {{#if isNonStopFlight}}
+                                                                                    <p class="bold-label">{!$Label.KTD_Text_NonStopFlight}</p>
+                                                                                {{/if}} 
+                                                                            </div>
+                                                                        {{/each}}
+                                                                    {{/compare}}
+
+                                                                    <!-- CAR RENTAL -->
+                                                                    {{#compare recordTypeName "==" "Car_Rental"}}
+                                                                        <div class="dtd-flight-info">
+                                                                        {{#compare dateFrom "==" dayDate}}
+                                                                            <p><span class="bold-label">Vehicle type: </span>{{itineraryItem.KaptioTravel__ExternalName__c}}</p>
+
+                                                                            {{#if itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__ExampleCarModel__c}}
+                                                                                <p><span class="bold-label">Example car model: </span>{{itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__ExampleCarModel__c}}</p>
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__PassengerCapactity__c}}
+                                                                                <p><span class="bold-label">Max Unit Occupants: </span>{{itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__PassengerCapactity__c}}</p>    
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__LuggageCapacity__c}}
+                                                                                <p><span class="bold-label">Luggage Capacity: </span>{{itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__LuggageCapacity__c}}</p>
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__MinDriverAge__c}}
+                                                                                <p><span class="bold-label">Min Driver Age: </span>{{itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__MinDriverAge__c}}</p>
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__DoorCount__c}}
+                                                                                <p><span class="bold-label">Door Count: </span>{{itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__DoorCount__c}}</p>
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__TransmissionType__c}}
+                                                                                <p><span class="bold-label">Transmission type: </span>{{itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__TransmissionType__c}}</p>
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__FuelType__c}}
+                                                                                <p><span class="bold-label">Fuel type: </span>{{itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__FuelType__c}}</p>
+                                                                            {{/if}}
+                                                                            
+                                                                                {{#compare itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__AirConditioning__c "==" true}}
+                                                                                    <p><span class="bold-label">Air Conditioning: </span>Included</p>
+                                                                                {{/compare}}
+                                                                                {{#compare itineraryItem.KaptioTravel__Price_Category__r.KaptioTravel__AirConditioning__c "==" false}}
+                                                                                    <p><span class="bold-label">Air Conditioning: </span>Not Included</p>
+                                                                                {{/compare}}
+                                                                            
+
+                                                                            <p><span class="bold-label">Duration of hire: </span>{{dateFrom}} - {{dateTo}}</p>
+                                                                            
+                                                                            {{#if addonsString}}
+                                                                                <p><span class="bold-label">Included: </span>{{addonsString}}</p>
+                                                                            {{/if}}
+
+                                                                            {{#if itineraryItem.KaptioTravel__CarPickUpLocation__c}}
+                                                                                <p><span class="bold-label">Pick-up point: </span>{{itineraryItem.KaptioTravel__CarPickUpLocation__r.Name}}</p>
+                                                                            {{/if}}
+                                                                            <p><span class="bold-label">Pick-up time: </span>{{timeFrom}}</p>
+                                                                            {{#if itineraryItem.KaptioTravel__CarPickUpLocation__r.KaptioTravel__Address__c}}
+                                                                                <p><span class="bold-label">Pick-up address: </span>{{itineraryItem.KaptioTravel__CarPickUpLocation__r.KaptioTravel__Address__c}}</p>
+                                                                            {{/if}}
+                                                                            
+                                                                        {{/compare}}
+
+                                                                        {{#compare dateTo "==" dayDate}}
+                                                                            {{#if itineraryItem.KaptioTravel__CarDropOffLocation__c}}
+                                                                                <p><span class="bold-label">Drop-off point: </span>{{itineraryItem.KaptioTravel__CarDropOffLocation__r.Name}}</p>
+                                                                            {{/if}}
+                                                                            <p><span class="bold-label">Drop-off time: </span>{{timeTo}}</p>
+                                                                            {{#if itineraryItem.KaptioTravel__CarDropOffLocation__r.KaptioTravel__Address__c}}
+                                                                                <p><span class="bold-label">Drop-off address: </span>{{itineraryItem.KaptioTravel__CarDropOffLocation__r.KaptioTravel__Address__c}}</p>
+                                                                            {{/if}}
+                                                                        {{/compare}}
+                                                                        </div>
+                                                                    {{/compare}}
+
+                                                                    <!-- RAIL -->
+                                                                    {{#if (isRailItem recordTypeName)}}
+                                                                        <p class="bold-label">{{itineraryItem.KaptioTravel__ExternalName__c}}</p>
+
+                                                                        {{#compare dateFrom "==" dayDate}}
+                                                                            {{#if itineraryItem.KaptioTravel__TrainStationStart__c}}
+                                                                                <p><span class="bold-label">Board: </span>{{itineraryItem.KaptioTravel__TrainStationStart__r.KaptioTravel__Location__r.Name}}</p>
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__TrainStationStart__r.KaptioTravel__Location__r.KaptioTravel__Address__c}}
+                                                                                <p><span class="bold-label">Address: </span>{{itineraryItem.KaptioTravel__TrainStationStart__r.KaptioTravel__Location__r.KaptioTravel__Address__c}}</p>
+                                                                            {{/if}}
+                                                                            <p><span class="bold-label">Time: </span>{{timeFrom}}</p>
+                                                                        {{/compare}}
+                                                                        {{#compare dateTo "==" dayDate}}
+                                                                            {{#if itineraryItem.KaptioTravel__TrainStationEnd__c}}
+                                                                                <p><span class="bold-label">Alight: </span>{{itineraryItem.KaptioTravel__TrainStationEnd__r.KaptioTravel__Location__r.Name}}</p>
+                                                                            {{/if}}
+                                                                            {{#if itineraryItem.KaptioTravel__TrainStationEndLocation__r.KaptioTravel__Address__c}}
+                                                                                <p><span class="bold-label">Address: </span>{{itineraryItem.KaptioTravel__TrainStationEnd__r.KaptioTravel__Location__r.KaptioTravel__Address__c}}</p>
+                                                                            {{/if}}
+                                                                            
+                                                                            <p><span class="bold-label">Time: </span>{{timeTo}}</p>
+                                                                        {{/compare}}
+                                                                        <!-- <br/> -->
+                                                                    {{/if}}
+
+                                                                    <!-- ACCOMMODATION -->
+                                                                    {{#compare recordTypeName "==" "Accommodation"}}
+                                                                        {{#compare dateFrom "==" dayDate}}  
+                                                                            <p><span class="bold-label">Check-in date: </span>{{dateFrom}}</p>
+                                                                            <p><span class="bold-label">Check-out date: </span>{{dateTo}}</p>
+                                                                        {{/compare}}
+                                                                        <p><span class="bold-label">Your room booking: </span>{{itineraryItem.KaptioTravel__Quantity__c}}x {{itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                                        {{#if addonsString}}
+                                                                            <p><span class="bold-label">Included: </span>{{addonsString}}</p>
+                                                                        {{/if}}
+                                                                        {{#compare dateFrom "==" dayDate}}  
+                                                                            {{#if itineraryItem.KaptioTravel__Item__r.Internal_Rating__c}}
+                                                                                <p><span class="bold-label">Our rating: </span>{{itineraryItem.KaptioTravel__Item__r.Internal_Rating__c}}</p>
+                                                                            {{/if}}
+                                                                        {{/compare}}
+                                                                        <!-- <br/> -->
+                                                                    {{/compare}}
+
+                                                                    {{#compare recordTypeName "==" "Transfer"}}
+                                                                        <p>{{itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                                    {{/compare}}
+                                                                    {{#compare recordTypeName "==" "Excursion"}}
+                                                                        <p>{{itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                                    {{/compare}}
+                                                                
+                                                                    <!-- CRUISE AND MULTI-DAY RAIL -->
+                                                                    {{#if (isServiceDepartureItem recordTypeName)}}
+                                                                        <!-- {{#compare dateTo "!=" dayDate}}    -->
+                                                                            {{#compare dateFrom "==" dayDate}}  
+                                                                                <p><span class="bold-label">
+                                                                                    {{#compare recordTypeName "==" "Cruise"}} Embark: {{/compare}}
+                                                                                    {{#compare recordTypeName "==" "MultidayRail"}}Board: {{/compare}}
+                                                                                </span>{{dateFrom}}</p>
+                                                                                <p><span class="bold-label">
+                                                                                    {{#compare recordTypeName "==" "Cruise"}}Disembark: {{/compare}}
+                                                                                    {{#compare recordTypeName "==" "MultidayRail"}}Alight: {{/compare}}
+                                                                                </span>{{dateTo}}</p>
+                                                                            {{/compare}}
+
+                                                                            <p><span class="bold-label">Cabin type: </span>{{itineraryItem.KaptioTravel__Quantity__c}}x {{itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                                            {{#if addonsString}}
+                                                                                <p><span class="bold-label">Included: </span>{{addonsString}}</p>
+                                                                            {{/if}}                                                                     
+                                                                        <!-- {{/compare}} -->
+                                                                    {{/if}}
+
+                                                                    {{#if (isUnknownRecordType recordTypeName)}}
+                                                                        <p class="bold-label">{{title}}</p>
+                                                                    {{/if}}
+                                                                </div>
+
+                                                                <!-- Content Notes -->
+                                                                {{#compare dateFrom "==" dayDate}}  
+                                                                    {{#if itineraryItem.KaptioTravel__CustomerNotes__c}}
+                                                                        <div class="agent-notes">
+                                                                            <div>
+                                                                                <img alt="{!agent.FirstName} {!agent.LastName}" src="{!agent.SmallPhotoUrl}" />
+                                                                            </div>
+                                                                            {{itineraryItem.KaptioTravel__CustomerNotes__c}}
+                                                                        </div>
+                                                                    {{/if}}
+                                                                {{/compare}}
+
+                                                                <!-- Short Content -->
+                                                                {{#if showContent}}
+                                                                    <div class="at-agenda-listview-listing-content">{{{shortContent}}}</div>
+                                                                {{/if}} 
+                                                            </div>                                                      
+                                                        </div>
+
+                                                        {{#if showContent}}
+                                                            <div class="text-right">
+                                                                <a href="javascript:void(0);" class="at-agenda-listview-listing-more-content">
+                                                                    View Details <i class="fas fa-chevron-right"></i>
+                                                                </a>
+                                                            </div>
+                                                        {{/if}}
+
+
+                                                    </div>
+                                                {{/if}}
+                                            {{/each}}
+                                        </div><!-- end of at-agenda-service-wrapper-->
+                                    </div> <!-- end of at-agenda-day-wrapper-->
+                                <!-- {{/unless}} -->
+                            {{/each}}
+                        </div> <!-- at-agenda-listview-mode end-->
+                    </div>
+                </div>
+            {{/compare}}
+        </div>
+    </script>
+
+    <script id="customKtAgendaModalTemplate" type="text/template">
+        <div class="ns-bootstrap">
+            <div class="modal fade" id="customAgendaModal">
+                <div class="kt-modal-container">
+
+                    <!-- <div class="kt-agenda-modal-article-nav">
+                        <div class="kt-agenda-prev lg-icon" onclick="prevAgendaListing();" id="kt-agenda-prev-article"></div>
+                        <div class="kt-agenda-next lg-icon" onclick="nextAgendaListing();" id="kt-agenda-next-article"></div>
+                    </div> -->
+
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content {{listingToShow.recordTypeName}}{{listingToShow.lineType}}">
+                            <button type="button" class="close" onclick="closeCustomAgendaModal()"><span aria-hidden="true">&times;</span></button>
+                            <div class="modal-header">
+                                <h3 class="modal-title">{{listingToShow.title}}{{#if listingToShow.subtitle}} - {{listingToShow.subtitle}}{{/if}}</h3>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="kt-agenda-content">
+                                    <!-- gallery -->
+                                    <div class="kt-agenda-showview-gallery">
+                                        <div class="kt-agenda-gallery-header">
+                                            <div class="kt-images-list" id="customLightgallery">
+                                            {{#each listingToShow.mediaList}}
+                                                <div class="custom-galery-image-item" data-src="{{url}}" style="{{#compare @index ">" "2"}}display: none;{{/compare}}">
+                                                    <a href="">
+                                                        <img class="img-responsive" src="https://res.cloudinary.com/kaptio/image/fetch/w_280,h_180,c_fill,g_face,f_auto/{{url}}">
+                                                    </a>
+                                                </div>
+                                            {{/each}}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row kt-agenda-showview">
+                                        <!-- <div class="row"> -->
+                                            <!-- content -->
+                                            <div class="col-md-8 kt-agenda-showview-content">
+                                                <div class="kt-agenda-showview-content" style="min-height:300px; font-size: 14px;">
+                                                    <div class="kt-agenda-content-body-text">
+                                                        {{{listingToShow.content}}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- sidebar -->
+                                            <div class="col-md-4 kt-agenda-showview-content">
+                                                <p><span class="bold-label">
+                                                {{#compare listingToShow.recordTypeName "==" "Accommodation"}}
+                                                    <p><span class="bold-label">Check in: </span>{{listingToShow.dateFrom}}</p>
+                                                    <p><span class="bold-label">Check out: </span>{{listingToShow.dateTo}}</p>
+                                                    <p><span class="bold-label">Your room booking: </span>{{listingToShow.itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                    {{#if listingToShow.addonsString}}
+                                                        <p><span class="bold-label">Included: </span>{{listingToShow.addonsString}}</p>
+                                                    {{/if}}
+                                                {{/compare}}
+
+                                                {{#compare listingToShow.recordTypeName "==" "MultidayRail"}}
+                                                    <p><span class="bold-label">Board: </span>{{listingToShow.dateFrom}}</p>
+                                                    <p><span class="bold-label">Alight: </span>{{listingToShow.dateTo}}</p>
+                                                    <p><span class="bold-label">Cabin type: </span>{{listingToShow.itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                    {{#if listingToShow.addonsString}}
+                                                        <p><span class="bold-label">Included: </span>{{listingToShow.addonsString}}</p>
+                                                    {{/if}}
+                                                {{/compare}}
+
+                                                {{#compare listingToShow.recordTypeName "==" "Cruise"}}
+                                                    <p><span class="bold-label">Embark: </span>{{listingToShow.dateFrom}}</p>
+                                                    <p><span class="bold-label">Disembark: </span>{{listingToShow.dateTo}}</p>
+                                                    <p><span class="bold-label">Cabin type: </span>{{listingToShow.itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                    {{#if listingToShow.addonsString}}
+                                                        <p><span class="bold-label">Included: </span>{{listingToShow.addonsString}}</p>
+                                                    {{/if}}
+                                                {{/compare}}
+
+                                                {{#compare listingToShow.recordTypeName "==" "Transfer"}}
+                                                    <p><span class="bold-label">Date: </span>{{listingToShow.dateFrom}}</p>
+                                                    <p><span class="bold-label">Price category: </span>{{listingToShow.itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                {{/compare}}
+
+                                                {{#compare listingToShow.recordTypeName "==" "Excursion"}}
+                                                    <p><span class="bold-label">Date: </span>{{listingToShow.dateFrom}}</p>
+                                                    <p><span class="bold-label">Price category: </span>{{listingToShow.itineraryItem.KaptioTravel__ExternalName__c}}</p>
+                                                {{/compare}}
+                                            </div>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <div id="custom-kt-agenda-modal-container"></div>
+
+    <script>
+        //KT AGENDA
+        var customAgendaTemplate = Handlebars.compile(jQuery('#customKtAgendaTemplate').html());
+        var customAgendaModalTemplate = Handlebars.compile(jQuery('#customKtAgendaModalTemplate').html());
+        const flightRecordTypes = ["FlightPlaceholder", "PNRFlight"];
+        const _customShortFormat = ("{!JSENCODE(shortFormat)}" || "'D MMM YYYY'").toUpperCase().replace(/E/g, 'd'); // convert to moment.js format;
+        const sortLines = (a, b) => {
+            if (a.order < b.order) {
+                return -1;
+            }
+            if (a.order > b.order) {
+                return 1;
+            }
+            return 0;
+        }
+        console.log('KT Agenda Script');
+
+        function ktAgenda_customInitHandler(block) {//custom kt agenda render
+            console.log('=== ktAgenda_customInitHandler');
+            try {
+                console.log('Try begins');
+                let contentIds = new Set();
+                block.data2.listingsToShowGroupedByDay = JSON.parse(JSON.stringify(block.data2.listingsToShowGroupedByDay));
+                console.log('block.data2.listingsToShowGroupedByDay:');
+                console.log(block.data2.listingsToShowGroupedByDay);
+                block.data2.listingsToShowGroupedByDay.forEach((day) => {
+                    // day.isEmptyDay = true;
+                    console.log('day:');
+                    console.log(day);
+                    day.listings.forEach((listing) => {
+                        console.log('Listing:');
+                        console.log(listing);
+                        //listing.imageUrl = escape(listing.imageUrl);
+
+                        listing.isVisible = true;
+                        listing.showContent = true;
+                        if (block.data2.startDate)
+                            listing.dayDate = moment.utc(block.data2.startDate).add(day.day - 1, 'days').format(_customShortFormat);
+                        listing = setAdditionalProperties(listing);
+
+                        //set day item visibility
+                        if (listing.recordTypeName == "Car_Rental" || listing.recordTypeName == "Rail" || listing.recordTypeName == "ManualRail") {
+                            console.log('is car or rail');
+                            listing.isVisible = (listing.dateFrom == listing.dayDate || listing.dateTo == listing.dayDate);
+                        }
+                        if (listing.recordTypeName == "Cruise" || listing.recordTypeName == "MultidayRail" || listing.lineType == 'iiShipLine') {
+                            console.log('is Service Departure');
+                            listing.isVisible = (listing.dateFrom == listing.dayDate);
+                        }
+                        if (listing.recordTypeName == "Accommodation") {
+                            console.log('is Accommodation');
+                            listing.isVisible = (listing.dateTo != listing.dayDate && listing.dateTo != block.data2.endDate);
+                        }
+                        if ((listing.recordTypeName == "FlightPlaceholder") || (listing.recordTypeName == "PNRFlight")) {
+                            console.log('is Flight');
+                            listing.isVisible = (listing.flightLegs);
+                        }
+                        if (listing.lineType == 'iiCabinTypeLine') {
+                            console.log('is Cabin');
+                            listing.isVisible = false;
+                        }
+
+                        //set item content visibility
+                        if (listing.recordTypeName != "Car_Rental" && listing.recordTypeName != "FlightPlaceholder" && listing.recordTypeName != "PNRFlight") {
+                            if (!contentIds.has(listing.itemContentId)) {
+                                contentIds.add(listing.itemContentId);
+                            } else {
+                                if (listing.lineType == 'iiShipLine' || listing.lineType == 'iiCabinTypeLine' || listing.lineType == 'iiDepartureLocationLine') {
+                                    listing.isVisible = false;
+                                } else {
+                                    listing.showContent = false;
+                                }
+
+                            }
+                        }
+
+                        if (
+                            listing.content == null || 
+                            listing.recordTypeName == "FlightPlaceholder" || 
+                            listing.recordTypeName == "PNRFlight" ||
+                            ( // show content on first day only
+                                ( 
+                                    listing.recordTypeName == "Car_Rental" ||     
+                                    listing.recordTypeName == "Rail" || 
+                                    listing.recordTypeName == "ManualRail" || 
+                                    listing.recordTypeName == "Cruise" || 
+                                    listing.recordTypeName == "MultidayRail"
+                                ) && 
+                                listing.dateFrom != listing.dayDate
+                            )
+                        ) {
+                                console.log('do not show content');
+                            listing.showContent = false;
+                        }
+
+                        // if (listing.isVisible) { day.isEmptyDay = false; }
+                    });
+                    day.listings.sort(sortLines);
+                });
+                console.log('day loop ends');
+                console.log(block.data2);
+                console.log(customAgendaTemplate);
+
+                block.$('.kt-agenda-content').html(customAgendaTemplate(block.data2));
+                console.log('block');
+                console.log(block);
+                block.$('.at-agenda-listview-listing-more-content, .at-agenda-listview-listing-box.more-content').click(function () {
+                    console.log('block click function');
+                    var listingBox = jQuery(this).closest('.at-agenda-listview-listing-box');
+                    var lisdingIndex = listingBox.data('listing-index');
+                    block.data2.listingToShow = block.data2.listings[lisdingIndex];
+                    if (block.data2.listingToShow)
+                        block.data2.listingToShow = setAdditionalProperties(block.data2.listingToShow);
+
+                    block.data2.listingToShowIndex = lisdingIndex;
+                    if (block.data2.listingToShow)
+                        block.data2.listingToShow.viewListingMode = 'featureImage';
+                    block.data2.listingIndexInGroup = listingBox.data('show-listing-index');
+                    block.data2.groupListingIndex = listingBox.data('showgroup-listing-index');
+                    showCustomKTAgendaShowView(block);
+                    console.log('block click function ends');
+                    return false;
+                });
+
+                block.$('.at-agenda-listview-listing-title').each(function () {
+                    console.log('block each: verifyExclusiveRecordType')
+                    if (verifyExclusiveRecordType(block.data2.listings, flightRecordTypes)) {
+                        jQuery(this).hide();
+                    }
+                });
+
+                block.$('.at-flight-heading-output').each(function () {
+                    console.log('block each flight: verifyExclusiveRecordType')
+                    if ((!verifyExclusiveRecordType(block.data2.listings, flightRecordTypes)) ||
+                        ((verifyExclusiveRecordType(block.data2.listings, flightRecordTypes)) && (block.data2.listings.length == 0))) {
+                        jQuery(this).hide();
+                    }
+                });
+
+                block.$('.at-agenda-day-heading-output').each(function () {
+                    console.log('block day agenda each: getDayHeadingValue')
+                    jQuery(this).text(getDayHeadingValue(block.data2, this));
+                });
+
+                block.$('.rich-text-field').each(function () {
+                    console.log('block text field each: data')
+                    jQuery(this).html(jQuery(this).data('rich-text-value'));
+                });
+                
+                buildArticlesNav(block);
+
+            } catch (err) {
+                console.log('KT Agenda Error:', err.message);
+            }
+        }
+
+        function setAdditionalProperties(listing) {
+            console.log('=== setAdditionalProperties');
+            console.log('recordType: ' + listing.recordTypeName);
+
+            if (listing.processed) {
+                console.log("is processed return");
+                return listing;
+            }
+
+            //flight legs
+            if ((listing.recordTypeName == "FlightPlaceholder" || listing.recordTypeName == "PNRFlight") && listing.childSobjects) {
+                console.log("is flight");
+                let allflightLegs;
+                if (listing.recordTypeName == "FlightPlaceholder")
+                    allflightLegs = listing.childSobjects['KaptioTravel__Itinerary_Flight_Legs__r'];
+                if (listing.recordTypeName == "PNRFlight")
+                    allflightLegs = listing.childSobjects['KaptioTravel__PNRFlightSegments__r'];
+                let passengerAssignments = listing.childSobjects['KaptioTravel__PassengerItineraryUnitAssignments__r'];
+
+                let passengerStringArray = new Array();
+                if (passengerAssignments) {
+                    passengerAssignments.sort(comparePassengers);
+
+                    passengerAssignments.forEach((assignment) => {
+                        if (assignment.KaptioTravel__Passenger__c) {
+                            let passengerName = '';
+                            if (assignment.KaptioTravel__Passenger__r.KaptioTravel__FirstName__c)
+                                passengerName += assignment.KaptioTravel__Passenger__r.KaptioTravel__FirstName__c + ' ';
+                            if (assignment.KaptioTravel__Passenger__r.KaptioTravel__MiddleName__c)
+                                passengerName += assignment.KaptioTravel__Passenger__r.KaptioTravel__MiddleName__c + ' ';
+                            if (assignment.KaptioTravel__Passenger__r.KaptioTravel__LastName__c)
+                                passengerName += assignment.KaptioTravel__Passenger__r.KaptioTravel__LastName__c + ' ';
+                            if (passengerName)
+                                passengerStringArray.push(' ' + passengerName);
+                        }
+
+                    });
+                    passengerStringArray.join(',');
+                }
+
+                listing.flightLegs = new Array();
+                // listing.isNonStopFlight = (allflightLegs.length == 1);
+
+                if (allflightLegs) {
+                    allflightLegs.forEach((flightLeg) => {
+                        if (flightLeg.KaptioTravel__DepartureDate__c)
+                            flightLeg.KaptioTravel__DepartureDate__c = moment.utc(flightLeg.KaptioTravel__DepartureDate__c).format(_customShortFormat);
+                        if (flightLeg.KaptioTravel__ArrivalDate__c)
+                            flightLeg.KaptioTravel__ArrivalDate__c = moment.utc(flightLeg.KaptioTravel__ArrivalDate__c).format(_customShortFormat);
+                        if ((listing.recordTypeName == "PNRFlight") && (flightLeg.KaptioTravel__DepartureTime__c))
+                            flightLeg.KaptioTravel__DepartureTime__c = flightLeg.KaptioTravel__DepartureTime__c.toString().substring(0, 5);
+                        if ((listing.recordTypeName == "PNRFlight") && (flightLeg.KaptioTravel__ArrivalTime__c))
+                            flightLeg.KaptioTravel__ArrivalTime__c = flightLeg.KaptioTravel__ArrivalTime__c.toString().substring(0, 5);
+                        flightLeg.passengers = passengerStringArray;
+
+                        if (flightLeg.KaptioTravel__DepartureDate__c == listing.dayDate) {
+                            flightLeg.isNextDayArriving = (flightLeg.KaptioTravel__DepartureDate__c < flightLeg.KaptioTravel__ArrivalDate__c);
+                            listing.flightLegs.push(flightLeg);
+                        }
+                    });
+                }
+
+                listing.flightLegs.sort(compareFlightSegments);
+            }
+            console.log('flights done');
+            //add-ons
+            if ((listing.recordTypeName == "Accommodation" || listing.recordTypeName == "Car_Rental" || listing.recordTypeName == "Cruise" || listing.recordTypeName == "MultidayRail") && listing.childSobjects) {
+                console.log("is Acc, Car, Cruise, MultidayRail");
+                let allAddons = listing.childSobjects['KaptioTravel__ItineraryServices__r'];
+                listing.addonsString = '';
+
+                if (allAddons) {
+                    allAddons.forEach((addon) => {
+                        if ((addon.KaptioTravel__Addon__c) && (listing.addonsString)) {
+                            if (listing.addonsString.length) { listing.addonsString += ', '; }
+                            listing.addonsString += addon.KaptioTravel__Addon__r.Name;
+                        }
+                    });
+                }
+            }
+            console.log('add-ons done');
+
+            if (listing.dateFrom)
+                listing.dateFrom = moment.utc(listing.dateFrom).format(_customShortFormat);
+            if (listing.dateTo)
+                listing.dateTo = moment.utc(listing.dateTo).format(_customShortFormat);
+            console.log('dates done');
+            
+            //mediaList 
+            if (listing.mediaList) {
+                console.log("has media");
+                var imagesSize = (listing.mediaList.length > 6) ? 6 : listing.mediaList.length;
+                listing.mediaList = listing.mediaList.slice(0, imagesSize);
+
+                /*listing.mediaList.forEach((media) => {
+                    media.url = encodeURI(media.url);
+                });*/
+            }
+            console.log('media done');
+
+            listing.processed = true;
+            return listing;
+        }
+
+        function comparePassengers(pax1, pax2) {
+            console.log('=== setAdditionalProperties');
+            if ((pax1) && (pax1.KaptioTravel__Passenger__c) && (pax2) && (pax2.KaptioTravel__Passenger__c)) {
+                if ((pax1.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c) && (pax2.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c) &&
+                    (pax1.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c < pax2.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c))
+                    return -1;
+                else if ((pax1.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c) && (pax2.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c) &&
+                    (pax1.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c > pax2.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c))
+                    return 1;
+                else if ((pax1.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c) && (!pax2.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c))
+                    return -1;
+                else if ((!pax1.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c) && (pax2.KaptioTravel__Passenger__r.KaptioTravel__AllocationId__c))
+                    return 1;
+                else if (pax1.KaptioTravel__Passenger__r.KaptioTravel__LeadPassenger__c)
+                    return -1;
+                else if (pax2.KaptioTravel__Passenger__r.KaptioTravel__LeadPassenger__c)
+                    return 1;
+                else if (pax1.KaptioTravel__Passenger__r.KaptioTravel__FirstName__c < pax2.KaptioTravel__Passenger__r.KaptioTravel__FirstName__c)
+                    return -1;
+                else if (pax1.KaptioTravel__Passenger__r.KaptioTravel__FirstName__c > pax2.KaptioTravel__Passenger__r.KaptioTravel__FirstName__c)
+                    return 1;
+                else if (pax1.KaptioTravel__Passenger__r.KaptioTravel__LastName__c < pax2.KaptioTravel__Passenger__r.KaptioTravel__LastName__c)
+                    return -1;
+                else if (pax1.KaptioTravel__Passenger__r.KaptioTravel__LastName__c > pax2.KaptioTravel__Passenger__r.KaptioTravel__LastName__c)
+                    return 1;
+            }
+            return 0;
+        }
+
+        function compareFlightSegments(flight1, flight2) {
+            console.log('=== compareFlightSegments');
+            if ((flight1) && (flight2)) {
+                if ((flight1.KaptioTravel__DepartureDate__c) && (flight2.KaptioTravel__DepartureDate__c) &&
+                    (flight1.KaptioTravel__DepartureDate__c > flight2.KaptioTravel__DepartureDate__c))
+                    return 1;
+                else if ((flight1.KaptioTravel__DepartureDate__c) && (flight2.KaptioTravel__DepartureDate__c) &&
+                    (flight1.KaptioTravel__DepartureDate__c < flight2.KaptioTravel__DepartureDate__c))
+                    return -1;
+                else if ((flight1.KaptioTravel__DepartureDate__c) && (flight2.KaptioTravel__DepartureDate__c) &&
+                    (flight1.KaptioTravel__DepartureDate__c == flight2.KaptioTravel__DepartureDate__c)) {
+                    if ((flight1.KaptioTravel__DepartureTime__c) && (flight2.KaptioTravel__DepartureTime__c) &&
+                        (flight1.KaptioTravel__DepartureTime__c > flight2.KaptioTravel__DepartureTime__c))
+                        return 1;
+                    else if ((flight1.KaptioTravel__DepartureTime__c) && (flight2.KaptioTravel__DepartureTime__c) &&
+                        (flight1.KaptioTravel__DepartureTime__c < flight2.KaptioTravel__DepartureTime__c))
+                        return -1;
+                }
+            }
+            return 0;
+        }
+
+        function showCustomKTAgendaShowView(block) {
+            console.log('=== showCustomKTAgendaShowView');
+            let data = block.data2;
+            data.view = 'showView';
+
+            let ktAgendaHtml = customAgendaModalTemplate(data);
+            if (ktAgendaHtml)
+                jQuery('#custom-kt-agenda-modal-container').html('').append(jQuery(ktAgendaHtml));
+            jQuery("body").addClass('kt-agenda-hide-scroll');
+            jQuery("#customAgendaModal").modal('show');
+
+            jQuery('#customLightgallery').lightGallery({
+                hash: false,
+                loadYoutubeThumbnail: false,
+                loadVimeoThumbnail: false,
+                selector: '.custom-galery-image-item'
+            });
+            return jQuery("#customAgendaModal");
+        }
+
+        function closeCustomAgendaModal() {
+            jQuery("#customAgendaModal").modal('hide');
+            jQuery("body").removeClass('kt-agenda-hide-scroll');
+        }
+
+        function getDayHeadingValue(data, el) {
+            console.log('=== getDayHeadingValue');
+            var nDay = data.currentDay == 0 ? jQuery(el).data('current-day') : data.currentDay;
+            var nDate;
+            if (data.startDate)
+                nDate = moment.utc(data.startDate).add(nDay - 1, 'days').format(("{!dateFormat}" || "'D MMM YYYY'").toUpperCase().replace(/E/g, 'd')); // convert to moment.js format;
+            var dayValue;
+
+            dayValue = '';
+            if (nDate) {
+                if (verifyExclusiveRecordType(data.listings, flightRecordTypes)) {
+                    data.listingsToShowGroupedByDay.forEach((day) => {
+                        if ((day.day == nDay) && (isShowContent(day.listings)))
+                            dayValue = nDate;
+                    });
+
+                }
+                else
+                    dayValue = 'Day ' + nDay + ': ' + nDate;
+            }
+
+            return dayValue;
+        }
+
+        function buildArticlesNav(block) {
+            console.log('=== buildArticlesNav');
+            // if (block.data2.listingsToShow.length > 1) {
+            //     jQuery('#kt-agenda-prev-article').show();
+            //     jQuery('#kt-agenda-next-article').show();
+            //     window.nextAgendaListing = function () {
+            //         block.data2 = getFollowingListingData(block.data2);
+            //         showCustomKTAgendaShowView(block);
+            //         return false;
+            //     }
+            //     window.prevAgendaListing = function () {
+            //         block.data2 = getFollowingListingData(block.data2, true);
+            //         showCustomKTAgendaShowView(block);
+            //         return false;
+            //     }
+            // } else {
+            //     jQuery('#kt-agenda-prev-article').hide();
+            //     jQuery('#kt-agenda-next-article').hide();
+            // }
+        }
+
+        function getFollowingListingData(data, isPrev) {
+            console.log('=== getFollowingListingData');
+            var listingIndexInGroup = data.listingIndexInGroup;
+            var groupListingIndex = data.groupListingIndex;
+            var dayGroups = data.listingsToShowGroupedByDay;
+            if (isPrev) {
+                populatePrevListingData();
+            } else {
+                populateNextListingData();
+            }
+            data.listingToShow = dayGroups[groupListingIndex].listings[listingIndexInGroup];
+            if (data.listings[data.listingToShow.index]) {
+                data.listingToShow = data.listings[data.listingToShow.index];
+            }
+            data.listingIndexInGroup = listingIndexInGroup;
+            data.groupListingIndex = groupListingIndex;
+            return data;
+
+            function populateNextListingData() {
+                if (dayGroups[groupListingIndex]) {
+                    if (dayGroups[groupListingIndex].listings[listingIndexInGroup + 1]) {
+                        listingIndexInGroup = listingIndexInGroup + 1;
+                        groupListingIndex = groupListingIndex;
+                    } else if (dayGroups[groupListingIndex + 1]) {
+                        listingIndexInGroup = 0;
+                        groupListingIndex = groupListingIndex + 1;
+                    } else {
+                        listingIndexInGroup = 0;
+                        groupListingIndex = 0;
+                    }
+                } else {
+                    listingIndexInGroup = 0;
+                    groupListingIndex = 0;
+                }
+            }
+            function populatePrevListingData() {
+                if (dayGroups[groupListingIndex]) {
+                    if (dayGroups[groupListingIndex].listings[listingIndexInGroup - 1]) {
+                        groupListingIndex = groupListingIndex;
+                        listingIndexInGroup = listingIndexInGroup - 1;
+                    } else if (dayGroups[groupListingIndex - 1]) {
+                        groupListingIndex = groupListingIndex - 1;
+                        listingIndexInGroup = dayGroups[groupListingIndex].listings.length - 1;
+                    } else {
+                        groupListingIndex = dayGroups.length - 1;
+                        listingIndexInGroup = dayGroups[groupListingIndex].listings.length - 1;
+                    }
+                } else {
+                    listingIndexInGroup = 0;
+                    groupListingIndex = 0;
+                }
+            }
+        }
+
+        Handlebars.registerHelper('isUnknownRecordType', function (recordType) {
+            console.log('=== isUnknownRecordType');
+            return [
+                'Location',
+                'Accommodation',
+                'Excursion',
+                'Transfer',
+                'Flight',
+                'FlightPlaceholder',
+                'PNRFlight',
+                'Car_Rental',
+                'Cruise',
+                'Rail',
+                'Rail_PTP',
+                'Rail_Accommodation',
+                'MultidayRail',
+                'ManualRail',
+                'Activity',
+                'MultiDayItem',
+                'Package_Item',
+                'Restaurant',
+                'Extra',
+                'Misc',
+                'Custom Item',
+            ].indexOf(recordType) < 0;
+        });
+
+        Handlebars.registerHelper('isServiceDepartureItem', function (recordType) {
+            console.log('=== isServiceDepartureItem');
+            return (recordType == 'Cruise' || recordType == 'MultidayRail');
+        });
+
+        Handlebars.registerHelper('isRailItem', function (recordType) {
+            console.log('=== isRailItem');
+            return (recordType == 'Rail' || recordType == 'ManualRail');
+        });
+
+        // TODO: FIx
+        Handlebars.registerHelper('getListingTitle', function (listing) {
+            console.log('=== getListingTitle');
+            var title = '';
+
+            if (listing.recordTypeName == null || listing.recordTypeName == '') {
+                title = listing.title;
+            } else if (listing.recordTypeName == 'Car_Rental') {
+                title += (listing.dateFrom == listing.dayDate) ? 'Vehicle Hire Pick-up ' : ((listing.dateTo == listing.dayDate) ? 'Vehicle Hire Drop-off ' : '');
+                title += listing.itineraryItem.KaptioTravel__ExternalItemName__c;
+            } else if ((listing.recordTypeName == 'FlightPlaceholder') || (listing.recordTypeName == 'PNRFlight')) {
+                title = (listing.itineraryItem.KaptioTravel__FlightBookingSource__c == 'Client') ? 'Flights you have arranged yourself (not included in your quotation)' : 'Flights';
+            } else {
+                title = listing.itineraryItem.KaptioTravel__ExternalItemName__c;
+            }
+            return title;
+        });
+
+
+        // TODO: Fix
+        Handlebars.registerHelper('getComponentHeader', function (listings) {
+            console.log('=== getComponentHeader');
+            var header = 'Detailed Itinerary';
+
+            if (verifyExclusiveRecordType(listings, flightRecordTypes)) {
+                var arrangedByClient = true;
+                listings.forEach((listing) => {
+                    if (listing.itineraryItem.KaptioTravel__FlightBookingSource__c != 'Client')
+                        arrangedByClient = false;
+                });
+                if (!arrangedByClient)
+                    header = 'Flight Information';
+                else header = '';
+            }
+
+            return header;
+        });
+
+        // TODO: Fix
+        Handlebars.registerHelper('getFlightHeader', function (listings) {
+            console.log('=== getFlightHeader');
+            var header = '';
+
+            if ((listings.length > 0) && (verifyExclusiveRecordType(listings, flightRecordTypes))) {
+                header = 'Flights you have arranged yourself (not included in your quotation)';
+                listings.forEach((listing) => {
+                    console.log('header:', listing.itineraryItem.KaptioTravel__FlightBookingSource__c);
+                    if (listing.itineraryItem.KaptioTravel__FlightBookingSource__c != 'Client')
+                        header = 'Flights arranged by us';
+                });
+                console.log('header: pe aici');
+            }
+
+            return header;
+        });
+
+        function verifyExclusiveRecordType(listings, recordTypes) {
+            console.log('=== verifyExclusiveRecordType');
+            var isExclusive = true;
+
+            listings.forEach((listing) => {
+                if (!recordTypes.includes(listing.recordTypeName))
+                    isExclusive = false;
+            });
+
+            return isExclusive;
+        };
+
+        function isShowContent(listings) {
+            console.log('=== isShowContent');
+            var showContent = false;
+
+            listings.forEach((listing) => {
+                if (listing.childSobjects) {
+                    let allflightLegs;
+                    if (listing.recordTypeName == "FlightPlaceholder")
+                        allflightLegs = listing.childSobjects['KaptioTravel__Itinerary_Flight_Legs__r'];
+                    if (listing.recordTypeName == "PNRFlight")
+                        allflightLegs = listing.childSobjects['KaptioTravel__PNRFlightSegments__r'];
+                    if (allflightLegs) {
+                        allflightLegs.forEach((flightLeg) => {
+                            if (flightLeg.KaptioTravel__DepartureDate__c == listing.dayDate)
+                                showContent = true;
+                        });
+                    }
+                }
+            });
+
+            return showContent;
+
+        }
+    </script>
+</apex:component>

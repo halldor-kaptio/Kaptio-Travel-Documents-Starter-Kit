@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LogoPDFWidth__c</fullName>
+    <description>Please enter the {width/height} of the {Invoice/PDF/- Logo} in pixels. Leaving this field empty will set the {width/height} to “auto”.</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Please enter the width of the PDF Logo in pixels. Leaving this field empty will set the width to “auto”.</inlineHelpText>
+    <label>Logo PDF Width</label>
+    <precision>4</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

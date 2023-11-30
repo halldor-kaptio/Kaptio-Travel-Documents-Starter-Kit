@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>KTD_Heading_Pricing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Heading_Pricing</shortDescription>
+        <value>Pricing</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Heading_YourAgent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Heading_YourAgent</shortDescription>
+        <value>Your Agent</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Heading_YourItinerary</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Heading_YourItinerary</shortDescription>
+        <value>Your Itinerary</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Address</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Address</shortDescription>
+        <value>Address</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Airline</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Airline</shortDescription>
+        <value>Airline</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Arr</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Arr</shortDescription>
+        <value>Arr</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_CancellationCharge</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_CancellationCharge</shortDescription>
+        <value>Cancellation Charge</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Class</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Class</shortDescription>
+        <value>Class</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Commission</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Commission</shortDescription>
+        <value>Commission</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_CommissionTaxTotal</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_CommissionTaxTotal</shortDescription>
+        <value>Commission Tax Total</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_ConfirmationNumber</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_ConfirmationNumber</shortDescription>
+        <value>Confirmation Number</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Dep</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Dep</shortDescription>
+        <value>Dep</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_DepositDue</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_DepositDue</shortDescription>
+        <value>Deposit Due</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_DepositDueDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_DepositDueDate</shortDescription>
+        <value>Deposit Due Date</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_DepositPerPerson</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_DepositPerPerson</shortDescription>
+        <value>Deposit per person</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_DescriptionOfServices</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_DescriptionOfServices</shortDescription>
+        <value>Description of services</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_FinalBalance</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_FinalBalance</shortDescription>
+        <value>Final Balance</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_FinalBalanceDueDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_FinalBalanceDueDate</shortDescription>
+        <value>Final Balance Due Date</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_FlightNo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_FlightNo</shortDescription>
+        <value>Flight no.</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_InvoiceAmount</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_InvoiceAmount</shortDescription>
+        <value>Invoice Amount</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_IssueDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_IssueDate</shortDescription>
+        <value>Issue Date</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_ItineraryReference</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_ItineraryReference</shortDescription>
+        <value>Itinerary Reference</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_LeadName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_LeadName</shortDescription>
+        <value>Lead Name</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Name</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Name</shortDescription>
+        <value>Name</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_OutstandingBalance</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_OutstandingBalance</shortDescription>
+        <value>Outstanding Balance</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Passengers</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Passengers</shortDescription>
+        <value>Passengers</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_PaymentReceived</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_PaymentReceived</shortDescription>
+        <value>Payment Received</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_PerPerson</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_PerPerson</shortDescription>
+        <value>Per Person</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_PricePerPerson</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_PricePerPerson</shortDescription>
+        <value>Price Per Person</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Quantity</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Quantity</shortDescription>
+        <value>Quantity</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_QuoteReference</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_QuoteReference</shortDescription>
+        <value>Quote Reference</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_ReferenceNumber</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_ReferenceNumber</shortDescription>
+        <value>Reference Number</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_RefundDue</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_RefundDue</shortDescription>
+        <value>Refund Due</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_Total</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_Total</shortDescription>
+        <value>Total</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_TotalDeposit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_TotalDeposit</shortDescription>
+        <value>Total deposit</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_TotalPaid</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD Label TotalPaid</shortDescription>
+        <value>Total Paid</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_UnitPrice</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_UnitPrice</shortDescription>
+        <value>Unit Price</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_UpgradeOptions</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_UpgradeOptions</shortDescription>
+        <value>Upgrade options</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Label_YourConsultant</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Label_YourConsultant</shortDescription>
+        <value>Your Consultant</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Link_ContactUs</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Link_ContactUs</shortDescription>
+        <value>Contact Us</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Link_PrivacyPolicy</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Link_PrivacyPolicy</shortDescription>
+        <value>Privacy Policy</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Link_TermsOfUse</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Link_TermsOfUse</shortDescription>
+        <value>Terms of use</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Link_WebsiteFeedback</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Link_WebsiteFeedback</shortDescription>
+        <value>Website Feedback</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_AccommodationUnderOwnArrangements</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_AccommodationUnderOwnArrangements</shortDescription>
+        <value>Accommodation under own arrangements</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_Copyright</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_Copyright</shortDescription>
+        <value>Copyright Luxe Bespoke Journeys 2022</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_Day</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_Day</shortDescription>
+        <value>Day</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_InvoiceFooter</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_InvoiceFooter</shortDescription>
+        <value>Copyright Luxe Bespoke Journey Ltd. © 2022</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_NextDay</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_NextDay</shortDescription>
+        <value>(next day)</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_NonStopFlight</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_NonStopFlight</shortDescription>
+        <value>Non-stop flight</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_OnFlight</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_OnFlight</shortDescription>
+        <value>In Flight</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_To</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_To</shortDescription>
+        <value>to</value>
+    </labels>
+    <labels>
+        <fullName>KTD_Text_UnderOwnArrangement</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>KTD_Text_UnderOwnArrangement</shortDescription>
+        <value>Under Own Arrangement</value>
+    </labels>
+</CustomLabels>

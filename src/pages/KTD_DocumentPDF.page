@@ -1,0 +1,60 @@
+<apex:page controller="KTD_DocumentPDFController" standardStylesheets="false" showHeader="false" sidebar="false" applyHtmlTag="false"
+    applyBodyTag="false" cache="false" renderAs="{!renderAs}">
+
+    <html>
+
+    <head>
+        <link href="{!URLFOR($Resource.KaptioDocuments, '/css/stylePDF.css')}" rel="stylesheet" />
+
+        <style type="text/css">
+            {!colorscheme}  
+        
+            a,
+            h1,
+            h2,
+            h3.colored,
+            .front-page-description h3,
+            .price-container h3,
+            .kt-agenda-content h3.item-block-title,
+            .accommodation-content .item-title,
+            .flights-content .item-title,
+                {
+                color: var(--color-400);
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- FRONT PAGE OF PDF DOCUMENT -->
+        <div class="front-page-container">
+
+            <apex:outputPanel layout="block" rendered="{!AND(frontPageBanner != null, frontPageBanner != '')}" style="background: url(https://res.cloudinary.com/kaptio/image/fetch/w_794,h_320,c_fill,g_center,f_auto/{!frontPageBanner}) no-repeat; background-position: center;"
+                styleClass="banner-image"></apex:outputPanel>
+
+            <!-- Itinerary Info -->
+            <div class="front-page-description">
+                <h1>{!output.itinerary.Name}</h1>
+                <!-- <h2>Destination - TBC</h2> -->
+                <h3>
+                    <apex:outputText value="{0, date, MMMM yyyy}">
+                        <apex:param value="{!output.itinerary.KaptioTravel__Start_Date__c}" />
+                    </apex:outputText>
+                </h3>
+            </div>
+
+            <!-- Logo -->
+            <div class="front-page-logo">
+                <apex:image url="{!logo.logoUrl}" width="{!logo.logoWidth}" height="{!logo.logoHeight}"  />
+            </div>
+        </div>
+        <!-- END OF FRONT PAGE-->
+
+        <!-- BODY -->
+        <div id="mainContent">
+            <apex:outputText value="{!output.body}" escape="false" />
+        </div>
+        <!-- END OF BODY -->
+    </body>
+
+    </html>
+</apex:page>
