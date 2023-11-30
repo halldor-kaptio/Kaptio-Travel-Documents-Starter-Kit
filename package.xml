@@ -1,38 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    <types>
-        <members>KTD_ComponentBCOverviewController</members>
-        <members>KTD_ComponentCancellationController</members>
-        <members>KTD_ComponentItinerarySummaryController</members>
-        <members>KTD_ComponentPricingController</members>
-        <members>KTD_DocumentController</members>
-        <members>KTD_DocumentHelper</members>
-        <members>KTD_DocumentInvoiceController</members>
-        <members>KTD_DocumentInvoiceTemplateController</members>
-        <members>KTD_DocumentPDFController</members>
-        <members>KTD_DocumentTemplateController</members>
-        <members>KTD_DocumentTestHelper</members>
-        <members>KTD_DocumentTestSuite</members>
-        <members>CustomKTAgendaHandler</members>
-        <name>ApexClass</name>
-    </types>
-    <types>
-        <members>KTD_KTAgenda</members>
-        <members>KTD_DocumentInvoiceDetails</members>
-        <name>ApexComponent</name>
-    </types>
-    <types>
-        <members>KTD_ComponentBCOverview</members>
-        <members>KTD_ComponentCancellation</members>
-        <members>KTD_ComponentItinerarySummary</members>
-        <members>KTD_ComponentPricing</members>
-        <members>KTD_Document</members>
-        <members>KTD_DocumentInvoice</members>
-        <members>KTD_DocumentInvoiceTemplate</members>
-        <members>KTD_DocumentPDF</members>
-        <members>KTD_DocumentTemplate</members>
-        <name>ApexPage</name>
-    </types>
 
     <types>
         <members>KaptioDocuments</members>
@@ -105,9 +72,43 @@
         <members>KTD_Text_Day</members>
         <members>KTD_Text_Copyright</members>
         <members>KTD_Text_To</members>
-        <members>KTD_Text_NextDay</members>   
-        <members>KTD_Label_TotalPaid</members>      
+        <members>KTD_Text_NextDay</members>
+        <members>KTD_Label_TotalPaid</members>
         <name>CustomLabel</name>
+    </types>
+
+    <types>
+        <members>KTD_ComponentBCOverviewController</members>
+        <members>KTD_ComponentCancellationController</members>
+        <members>KTD_ComponentItinerarySummaryController</members>
+        <members>KTD_ComponentPricingController</members>
+        <members>KTD_DocumentController</members>
+        <members>KTD_DocumentHelper</members>
+        <members>KTD_DocumentInvoiceController</members>
+        <members>KTD_DocumentInvoiceTemplateController</members>
+        <members>KTD_DocumentPDFController</members>
+        <members>KTD_DocumentTemplateController</members>
+        <members>KTD_DocumentTestHelper</members>
+        <members>KTD_DocumentTestSuite</members>
+        <members>CustomKTAgendaHandler</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>KTD_KTAgenda</members>
+        <members>KTD_DocumentInvoiceDetails</members>
+        <name>ApexComponent</name>
+    </types>
+    <types>
+        <members>KTD_ComponentBCOverview</members>
+        <members>KTD_ComponentCancellation</members>
+        <members>KTD_ComponentItinerarySummary</members>
+        <members>KTD_ComponentPricing</members>
+        <members>KTD_Document</members>
+        <members>KTD_DocumentInvoice</members>
+        <members>KTD_DocumentInvoiceTemplate</members>
+        <members>KTD_DocumentPDF</members>
+        <members>KTD_DocumentTemplate</members>
+        <name>ApexPage</name>
     </types>
 
 
