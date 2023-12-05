@@ -2,16 +2,6 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 
     <types>
-        <members>KaptioDocuments</members>
-        <name>StaticResource</name>
-    </types>
-
-    <types>
-        <members>KaptioDocumentSetting__mdt</members>
-        <members>KaptioDocumentDateFormat__mdt</members>
-        <name>CustomObject</name>
-    </types>
-    <types>
         <members>KaptioDocumentDateFormat.DayNumberLongMonth</members>
         <members>KaptioDocumentDateFormat.LongMonthDayOfWeek</members>
         <members>KaptioDocumentDateFormat.Numeric</members>
@@ -19,62 +9,6 @@
         <members>KaptioDocumentDateFormat.ShortMonthDayOfWeek</members>
         <members>KaptioDocumentSetting.Default</members>
         <name>CustomMetadata</name>
-    </types>
-
-    <types>
-        <members>KTD_Heading_Pricing</members>
-        <members>KTD_Heading_YourAgent</members>
-        <members>KTD_Heading_YourItinerary</members>
-        <members>KTD_Label_Address</members>
-        <members>KTD_Label_Airline</members>
-        <members>KTD_Label_Arr</members>
-        <members>KTD_Label_CancellationCharge</members>
-        <members>KTD_Label_Class</members>
-        <members>KTD_Label_ConfirmationNumber</members>
-        <members>KTD_Label_Dep</members>
-        <members>KTD_Label_DepositPerPerson</members>
-        <members>KTD_Label_FlightNo</members>
-        <members>KTD_Label_InvoiceAmount</members>
-        <members>KTD_Label_IssueDate</members>
-        <members>KTD_Label_ItineraryReference</members>
-        <members>KTD_Label_LeadName</members>
-        <members>KTD_Label_Name</members>
-        <members>KTD_Label_PerPerson</members>
-        <members>KTD_Label_PricePerPerson</members>
-        <members>KTD_Label_QuoteReference</members>
-        <members>KTD_Label_ReferenceNumber</members>
-        <members>KTD_Label_RefundDue</members>
-        <members>KTD_Label_Total</members>
-        <members>KTD_Label_TotalDeposit</members>
-        <members>KTD_Label_UpgradeOptions</members>
-        <members>KTD_Label_YourConsultant</members>
-        <members>KTD_Link_ContactUs</members>
-        <members>KTD_Link_PrivacyPolicy</members>
-        <members>KTD_Link_TermsOfUse</members>
-        <members>KTD_Link_WebsiteFeedback</members>
-        <members>KTD_Label_Quantity</members>
-        <members>KTD_Label_DescriptionOfServices</members>
-        <members>KTD_Label_UnitPrice</members>
-        <members>KTD_Label_Commission</members>
-        <members>KTD_Label_CommissionTaxTotal</members>
-        <members>KTD_Label_PaymentReceived</members>
-        <members>KTD_Label_OutstandingBalance</members>
-        <members>KTD_Label_DepositDue</members>
-        <members>KTD_Label_DepositDueDate</members>
-        <members>KTD_Label_FinalBalance</members>
-        <members>KTD_Label_FinalBalanceDueDate</members>
-        <members>KTD_Label_Passengers</members>
-        <members>KTD_Text_AccommodationUnderOwnArrangements</members>
-        <members>KTD_Text_UnderOwnArrangement</members>
-        <members>KTD_Text_InvoiceFooter</members>
-        <members>KTD_Text_NonStopFlight</members>
-        <members>KTD_Text_OnFlight</members>
-        <members>KTD_Text_Day</members>
-        <members>KTD_Text_Copyright</members>
-        <members>KTD_Text_To</members>
-        <members>KTD_Text_NextDay</members>
-        <members>KTD_Label_TotalPaid</members>
-        <name>CustomLabel</name>
     </types>
 
     <types>
